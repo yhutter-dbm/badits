@@ -1,16 +1,14 @@
-# badits
+# Badits
 
-A new Flutter project.
+## What is it?
+A fun little habit reminder app written with the awesome Flutter Framework.
 
-## Getting Started
+## Why the name?
+Glad you asked :smile:
 
-This project is a starting point for a Flutter application.
+The name consists of the words **bad** and **habits** thus forming **badits**. 
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
+Here are some of the images of how the final app might look. And do not worry the final look will definitely and improvement over this mockup. Or we could integrate a "Baby" theme...
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Mockup](./documentation/images/mockup.png)
