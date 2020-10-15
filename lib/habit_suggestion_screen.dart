@@ -1,3 +1,4 @@
+import 'package:badits/routes.dart';
 import 'package:flutter/material.dart';
 
 class HabitSuggestionScreen extends StatelessWidget {
@@ -12,14 +13,20 @@ class HabitSuggestionScreen extends StatelessWidget {
     Icons.account_circle_sharp
   ];
 
-  List<Widget> _generateSuggestions(int numberOfSuggestions) {
+  List<Widget> _generateSuggestions(
+      BuildContext context, int numberOfSuggestions) {
     return List.generate(numberOfSuggestions, (index) {
-      return Card(
-          child: ListTile(
-        leading: Icon(_suggestionIcons[index]),
-        title: Text('Element # ${index + 1}'),
-        subtitle: Text('Some suggestion text...'),
-      ));
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(DASHBOARD_SCREEN_ROUTE);
+        },
+        child: Card(
+            child: ListTile(
+          leading: Icon(_suggestionIcons[index]),
+          title: Text('Element # ${index + 1}'),
+          subtitle: Text('Some suggestion text...'),
+        )),
+      );
     });
   }
 
@@ -42,7 +49,7 @@ class HabitSuggestionScreen extends StatelessWidget {
           child: GridView.count(
               crossAxisSpacing: 2,
               crossAxisCount: 2,
-              children: _generateSuggestions(_suggestionIcons.length)),
+              children: _generateSuggestions(context, _suggestionIcons.length)),
         ));
   }
 }

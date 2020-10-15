@@ -1,3 +1,4 @@
+import 'package:badits/habit_suggestion_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // We are finished fetching any startup data here...
-            return Container(child: Text('Finished...'));
+            return HabitSuggestionScreen();
           }
           return Scaffold(
             body: Container(
