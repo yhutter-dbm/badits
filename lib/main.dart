@@ -2,9 +2,13 @@ import 'package:badits/screens/dashboard_screen.dart';
 import 'package:badits/screens/habit_suggestion_screen.dart';
 import 'package:badits/models/routes.dart';
 import 'package:badits/screens/welcome_screen.dart';
+import 'package:badits/services/service_locator.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(BaditsApp());
+void main() {
+  setupStorageService();
+  runApp(BaditsApp());
+}
 
 class BaditsApp extends StatelessWidget {
   @override

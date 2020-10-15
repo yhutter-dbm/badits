@@ -1,5 +1,4 @@
 import 'package:badits/models/habit.dart';
-import 'package:badits/models/routes.dart';
 import 'package:flutter/material.dart';
 import '../helpers/string_helper.dart';
 
@@ -9,9 +8,13 @@ Implemented with reference to:
 - https://medium.com/flutter-community/a-deep-dive-into-datepicker-in-flutter-37e84f7d8d6c
 */
 class CreateHabitDialogWidget extends StatefulWidget {
+  final void Function(Habit habit) _onCreateFinishedCallback;
+
   @override
   _CreateHabitDialogWidgetState createState() =>
       _CreateHabitDialogWidgetState();
+
+  CreateHabitDialogWidget(this._onCreateFinishedCallback);
 }
 
 class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
@@ -80,14 +83,10 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                 child: FlatButton(
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      // Add into some kind of storage, investigate orm mapper...
-                      // TODO: Check why we still have a back button on the dashboard even though we did a pushReplacementNamed...
-
                       _habit.name = _habitTextNameController.text;
                       _habit.description = _habitTextNameController.text;
-
-                      Navigator.of(context)
-                          .pushReplacementNamed(DASHBOARD_SCREEN_ROUTE);
+                      this.widget._onCreateFinishedCallback(_habit);
+                      Navigator.of(context).pop();
                     }
                   },
                   child: Text('Save'),

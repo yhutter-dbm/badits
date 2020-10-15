@@ -1,29 +1,20 @@
+import 'package:badits/helpers/dummy_data_helper.dart';
 import 'package:badits/screens/create_habig_dialog.dart';
 import 'package:badits/models/habit.dart';
 import 'package:badits/models/routes.dart';
+import 'package:badits/services/service_locator.dart';
+import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:lipsum/lipsum.dart' as lipsum;
 
 class HabitSuggestionScreen extends StatelessWidget {
-  final List<Habit> _dummyHabits = [
-    Habit(
-        name: 'Habit One',
-        description: lipsum.createWord(numWords: 10),
-        dueDate: DateTime.now()),
-    Habit(
-        name: 'Habit Two',
-        description: lipsum.createWord(numWords: 10),
-        dueDate: DateTime.now()),
-    Habit(
-        name: 'Habit Three',
-        description: lipsum.createWord(numWords: 10),
-        dueDate: DateTime.now()),
-  ];
+  final List<Habit> _dummyHabits = DummyDataHelper.getHabits();
 
   List<Widget> _generateSuggestions(BuildContext context) {
     return _dummyHabits
         .map((habit) => GestureDetector(
-              onTap: () {
+              onTap: () async {
+                StorageService storageService = locator<StorageService>();
+                await storageService.insertHabit(habit);
                 Navigator.of(context)
                     .pushReplacementNamed(DASHBOARD_SCREEN_ROUTE);
               },
@@ -40,7 +31,12 @@ class HabitSuggestionScreen extends StatelessWidget {
   void _showCreateHabitDialog(BuildContext context) {
     showDialog(
         context: context,
-        builder: (_) => CreateHabitDialogWidget(),
+        builder: (_) => CreateHabitDialogWidget((habit) async {
+              StorageService storageService = locator<StorageService>();
+              await storageService.insertHabit(habit);
+              Navigator.of(context)
+                  .pushReplacementNamed(DASHBOARD_SCREEN_ROUTE);
+            }),
         barrierDismissible: true);
   }
 
