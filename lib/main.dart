@@ -1,7 +1,7 @@
-import 'package:badits/dashboard_screen.dart';
-import 'package:badits/habit_suggestion_screen.dart';
-import 'package:badits/routes.dart';
-import 'package:badits/welcome_screen.dart';
+import 'package:badits/screens/dashboard_screen.dart';
+import 'package:badits/screens/habit_suggestion_screen.dart';
+import 'package:badits/models/routes.dart';
+import 'package:badits/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(BaditsApp());

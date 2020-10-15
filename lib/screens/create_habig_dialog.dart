@@ -1,7 +1,7 @@
 import 'package:badits/models/habit.dart';
-import 'package:badits/routes.dart';
+import 'package:badits/models/routes.dart';
 import 'package:flutter/material.dart';
-import 'helpers/string_helper.dart';
+import '../helpers/string_helper.dart';
 
 /*
 Implemented with reference to: 

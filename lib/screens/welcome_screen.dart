@@ -1,4 +1,4 @@
-import 'package:badits/habit_suggestion_screen.dart';
+import 'package:badits/screens/habit_suggestion_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {

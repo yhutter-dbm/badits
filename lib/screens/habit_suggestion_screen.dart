@@ -1,6 +1,6 @@
-import 'package:badits/create_habig_dialog.dart';
+import 'package:badits/screens/create_habig_dialog.dart';
 import 'package:badits/models/habit.dart';
-import 'package:badits/routes.dart';
+import 'package:badits/models/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:lipsum/lipsum.dart' as lipsum;
 
