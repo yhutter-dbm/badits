@@ -1,3 +1,4 @@
+import 'package:badits/create_habig_dialog.dart';
 import 'package:badits/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class HabitSuggestionScreen extends StatelessWidget {
     return List.generate(numberOfSuggestions, (index) {
       return GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(DASHBOARD_SCREEN_ROUTE);
+          Navigator.of(context).pushReplacementNamed(DASHBOARD_SCREEN_ROUTE);
         },
         child: Card(
             child: ListTile(
@@ -30,11 +31,20 @@ class HabitSuggestionScreen extends StatelessWidget {
     });
   }
 
+  void _showCreateHabitDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => CreateHabitDialogWidget(),
+        barrierDismissible: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: null,
+          onPressed: () {
+            _showCreateHabitDialog(context);
+          },
           backgroundColor: Colors.blue,
           child: Icon(
             Icons.add,
