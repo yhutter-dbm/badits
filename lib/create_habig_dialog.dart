@@ -1,7 +1,12 @@
 import 'package:badits/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-// Implemented with reference to: https://flutter.dev/docs/cookbook/forms/validation
+/*
+Implemented with reference to: 
+- https://flutter.dev/docs/cookbook/forms/validation
+- https://medium.com/flutter-community/a-deep-dive-into-datepicker-in-flutter-37e84f7d8d6c
+*/
 class CreateHabitDialogWidget extends StatefulWidget {
   @override
   _CreateHabitDialogWidgetState createState() =>
@@ -10,6 +15,21 @@ class CreateHabitDialogWidget extends StatefulWidget {
 
 class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
   final _formKey = GlobalKey<FormState>();
+  final _dateFormat = 'dd.MM.yyyy';
+
+  DateTime _selectedDueDateTime = DateTime.now();
+
+  String _getFormattedDate(DateTime date) {
+    return DateFormat(_dateFormat).format(date);
+  }
+
+  Future<DateTime> _showDatePicker(BuildContext context) {
+    return showDatePicker(
+        context: context,
+        initialDate: _selectedDueDateTime,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2025));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +58,13 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                       }
                       return null;
                     },
-                  )
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        'Due Date ${_getFormattedDate(_selectedDueDateTime)}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ))
                 ],
               ),
               Positioned(
@@ -54,6 +80,19 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                     }
                   },
                   child: Text('Save'),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: FlatButton(
+                  onPressed: () async {
+                    final result = await _showDatePicker(context);
+                    setState(() {
+                      _selectedDueDateTime = result;
+                    });
+                  },
+                  child: Text('Pick a Date'),
                 ),
               )
             ],
