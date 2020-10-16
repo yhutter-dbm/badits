@@ -11,7 +11,6 @@ class WelcomeScreen extends StatelessWidget {
 
   Future<List<Habit>> _getHabitsFromStorage() async {
     StorageService storageService = locator<StorageService>();
-    await Future.delayed(Duration(seconds: 15));
     return storageService.getHabits();
   }
 
