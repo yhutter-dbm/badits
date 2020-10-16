@@ -1,6 +1,6 @@
 import 'package:badits/models/habit.dart';
 import 'package:flutter/material.dart';
-import '../helpers/string_helper.dart';
+import 'package:intl/intl.dart';
 
 /*
 Implemented with reference to: 
@@ -21,8 +21,13 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
   final _formKey = GlobalKey<FormState>();
   final _habitTextNameController = TextEditingController();
   final _habitTextDescriptionController = TextEditingController();
+  final _dateFormat = 'dd.MM.yyyy';
 
   Habit _habit = Habit(name: '', description: '', dueDate: DateTime.now());
+
+  String _getFormattedDate(DateTime date) {
+    return DateFormat(_dateFormat).format(date);
+  }
 
   Future<DateTime> _showDatePicker(BuildContext context) {
     return showDatePicker(
@@ -72,7 +77,7 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                   Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Text(
-                        'Due Date ${StringHelper.getFormattedDate(_habit.dueDate)}',
+                        'Due Date ${_getFormattedDate(_habit.dueDate)}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ))
                 ],

@@ -2,6 +2,7 @@ import 'package:badits/models/habit.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'create_habit_dialog.dart';
 
@@ -11,6 +12,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final _dateFormat = 'dd.MM.yyyy';
+
+  String _getFormattedDate(DateTime date) {
+    return DateFormat(_dateFormat).format(date);
+  }
+
   Future<List<Habit>> _getHabitsFromStorage() async {
     StorageService storageService = locator<StorageService>();
     return storageService.getHabits();
@@ -56,10 +63,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
-                  final habit = snapshot.data[index];
+                  final Habit habit = snapshot.data[index];
                   return ListTile(
                       title: Text(habit.name),
-                      subtitle: Text(habit.description));
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${_getFormattedDate(habit.dueDate)}',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                          Text(habit.description),
+                        ],
+                      ));
                 },
               ),
             );

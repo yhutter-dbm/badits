@@ -12,7 +12,7 @@ class StorageService {
     return await openDatabase(join(await getDatabasesPath(), 'badits.db'),
         version: 1, onCreate: (db, version) {
       return db.execute(
-          "CREATE TABLE habits(id INTEGER PRIMARY KEY, name TEXT, description TEXT)");
+          "CREATE TABLE habits(id INTEGER PRIMARY KEY, name TEXT, description TEXT, dueDate TEXT)");
     });
   }
 
