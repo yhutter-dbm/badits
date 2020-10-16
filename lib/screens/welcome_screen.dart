@@ -4,10 +4,14 @@ import 'package:badits/screens/habit_suggestion_screen.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  final _emojiParser = EmojiParser();
+
   Future<List<Habit>> _getHabitsFromStorage() async {
     StorageService storageService = locator<StorageService>();
+    await Future.delayed(Duration(seconds: 15));
     return storageService.getHabits();
   }
 
@@ -31,10 +35,14 @@ class WelcomeScreen extends StatelessWidget {
               children: [
                 Text(
                   'Habit Reminder',
-                  style: TextStyle(fontFamily: 'TitleFont', fontSize: 35),
+                  style: Theme.of(context).textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),
-                Image(image: AssetImage('images/welcome_screen.png'))
+                Text(
+                  _emojiParser.emojify(':heart_eyes:'),
+                  style: Theme.of(context).textTheme.headline1,
+                  textAlign: TextAlign.center,
+                ),
               ],
             )),
           );
