@@ -9,4 +9,5 @@ Glad you asked :smile:
 The name consists of the words **bad** and **habits** thus forming **badits**. 
 
 ## Screenshots
-![Welcome Screen](./documentation/images/welcome_screen.png)
+![Screenshot 01](./documentation/images/screenshot-01.png)
+![Screenshot 02](./documentation/images/screenshot-02.png)
