@@ -76,7 +76,7 @@ class _HabitsOverviewScreenState extends State<HabitsOverViewScreen> {
     showDialog(
         context: context,
         builder: (_) =>
-            EditHabitDialogWidget(this._onEditHabitFinishedCallback, habit),
+            EditHabitDialogWidget(habit, this._onEditHabitFinishedCallback),
         barrierDismissible: true);
   }
 

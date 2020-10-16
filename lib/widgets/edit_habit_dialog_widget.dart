@@ -8,12 +8,12 @@ Implemented with reference to:
 - https://medium.com/flutter-community/a-deep-dive-into-datepicker-in-flutter-37e84f7d8d6c
 */
 class EditHabitDialogWidget extends StatefulWidget {
-  final void Function(Habit habit) _onEditHabitFinishedCallback;
+  final void Function(Habit habit) onEditHabitFinishedCallback;
   final Habit habit;
   @override
   _EditHabitDialogWidgetState createState() => _EditHabitDialogWidgetState();
 
-  EditHabitDialogWidget(this._onEditHabitFinishedCallback, this.habit);
+  EditHabitDialogWidget(this.habit, this.onEditHabitFinishedCallback);
 }
 
 class _EditHabitDialogWidgetState extends State<EditHabitDialogWidget> {
@@ -90,7 +90,7 @@ class _EditHabitDialogWidgetState extends State<EditHabitDialogWidget> {
                           _habitTextDescriptionController.text;
                       this
                           .widget
-                          ._onEditHabitFinishedCallback(this.widget.habit);
+                          .onEditHabitFinishedCallback(this.widget.habit);
                       Navigator.of(context).pop();
                     }
                   },
