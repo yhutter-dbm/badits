@@ -1,5 +1,5 @@
 import 'package:badits/helpers/dummy_data_helper.dart';
-import 'package:badits/screens/create_habit_dialog.dart';
+import 'package:badits/widgets/create_habit_dialog_widget.dart';
 import 'package:badits/models/habit.dart';
 import 'package:badits/models/routes.dart';
 import 'package:badits/services/service_locator.dart';

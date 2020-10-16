@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
 
-import 'create_habit_dialog.dart';
+import '../widgets/create_habit_dialog_widget.dart';
 
 class HabitsToComplete extends StatefulWidget {
   @override

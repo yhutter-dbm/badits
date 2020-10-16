@@ -89,7 +89,7 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _habit.name = _habitTextNameController.text;
-                      _habit.description = _habitTextNameController.text;
+                      _habit.description = _habitTextDescriptionController.text;
                       this.widget._onCreateHabitFinishedCallback(_habit);
                       Navigator.of(context).pop();
                     }
