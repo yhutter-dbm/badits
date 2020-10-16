@@ -1,5 +1,5 @@
 import 'package:badits/helpers/dummy_data_helper.dart';
-import 'package:badits/screens/create_habig_dialog.dart';
+import 'package:badits/screens/create_habit_dialog.dart';
 import 'package:badits/models/habit.dart';
 import 'package:badits/models/routes.dart';
 import 'package:badits/services/service_locator.dart';
@@ -47,10 +47,10 @@ class HabitSuggestionScreen extends StatelessWidget {
           onPressed: () {
             _showCreateHabitDialog(context);
           },
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.yellow,
           child: Icon(
             Icons.add,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         appBar: AppBar(

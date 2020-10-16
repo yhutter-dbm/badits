@@ -8,10 +8,8 @@ Implemented with reference to:
 */
 
 class StorageService {
-  Database _database;
-
-  Future<void> open() async {
-    _database = await openDatabase(join(await getDatabasesPath(), 'badits.db'),
+  Future<Database> _open() async {
+    return await openDatabase(join(await getDatabasesPath(), 'badits.db'),
         version: 1, onCreate: (db, version) {
       return db.execute(
           "CREATE TABLE habits(id INTEGER PRIMARY KEY, name TEXT, description TEXT)");
@@ -19,22 +17,16 @@ class StorageService {
   }
 
   Future<void> insertHabit(Habit habit) async {
-    // TODO: Add save checking if database is open etc.
-    await _database.insert('habits', habit.toMap(),
+    final database = await _open();
+    database.insert('habits', habit.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Habit>> getHabits() async {
-    // TODO: Add save checking if database is open etc.
-    final List<Map<String, dynamic>> maps = await _database.query('habits');
+    final database = await _open();
+    final List<Map<String, dynamic>> maps = await database.query('habits');
     return List.generate(maps.length, (index) {
       return Habit.fromMap(maps[index]);
     });
-  }
-
-  close() async {
-    if (_database != null) {
-      await _database.close();
-    }
   }
 }

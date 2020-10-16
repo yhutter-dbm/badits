@@ -21,6 +21,7 @@ class BaditsApp extends StatelessWidget {
         DASHBOARD_SCREEN_ROUTE: (context) => DashboardScreen(),
       },
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.yellow),
     );
   }
 }

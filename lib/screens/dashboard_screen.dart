@@ -3,7 +3,7 @@ import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
 
-import 'create_habig_dialog.dart';
+import 'create_habit_dialog.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -19,13 +19,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _showCreateHabitDialog(BuildContext context) {
     showDialog(
         context: context,
-        builder: (_) => CreateHabitDialogWidget(this._onCreateHabitCallback),
+        builder: (_) =>
+            CreateHabitDialogWidget(this._onCreateHabitFinishedCallback),
         barrierDismissible: true);
   }
 
-  void _onCreateHabitCallback(Habit habit) async {
+  void _onCreateHabitFinishedCallback(Habit habit) async {
     StorageService storageService = locator<StorageService>();
     await storageService.insertHabit(habit);
+    // Needed for updating the widget because the habits have changed...
     setState(() {});
   }
 
@@ -36,10 +38,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onPressed: () {
           _showCreateHabitDialog(context);
         },
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.yellow,
         child: Icon(
           Icons.add,
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       appBar: AppBar(

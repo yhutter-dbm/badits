@@ -8,13 +8,13 @@ Implemented with reference to:
 - https://medium.com/flutter-community/a-deep-dive-into-datepicker-in-flutter-37e84f7d8d6c
 */
 class CreateHabitDialogWidget extends StatefulWidget {
-  final void Function(Habit habit) _onCreateFinishedCallback;
+  final void Function(Habit habit) _onCreateHabitFinishedCallback;
 
   @override
   _CreateHabitDialogWidgetState createState() =>
       _CreateHabitDialogWidgetState();
 
-  CreateHabitDialogWidget(this._onCreateFinishedCallback);
+  CreateHabitDialogWidget(this._onCreateHabitFinishedCallback);
 }
 
 class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
@@ -85,7 +85,7 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                     if (_formKey.currentState.validate()) {
                       _habit.name = _habitTextNameController.text;
                       _habit.description = _habitTextNameController.text;
-                      this.widget._onCreateFinishedCallback(_habit);
+                      this.widget._onCreateHabitFinishedCallback(_habit);
                       Navigator.of(context).pop();
                     }
                   },
@@ -98,9 +98,13 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                 child: FlatButton(
                   onPressed: () async {
                     final result = await _showDatePicker(context);
-                    setState(() {
-                      _habit.dueDate = result;
-                    });
+
+                    // The result can be null if the user has cancelled the date picker.
+                    if (result != null) {
+                      setState(() {
+                        _habit.dueDate = result;
+                      });
+                    }
                   },
                   child: Text('Pick a Date'),
                 ),
