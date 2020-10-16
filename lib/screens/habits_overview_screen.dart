@@ -1,6 +1,8 @@
 import 'package:badits/models/habit.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
+import 'package:badits/widgets/delete_habit_dialog_widget.dart';
+import 'package:badits/widgets/edit_habit_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
@@ -46,8 +48,16 @@ class _HabitsOverviewScreenState extends State<HabitsOverViewScreen> {
                   right: 0,
                   child: Row(
                     children: [
-                      FlatButton(onPressed: null, child: Icon(Icons.edit)),
-                      FlatButton(onPressed: null, child: Icon(Icons.delete))
+                      FlatButton(
+                          onPressed: () {
+                            this._showEditHabitDialog(context, habit);
+                          },
+                          child: Icon(Icons.edit)),
+                      FlatButton(
+                          onPressed: () {
+                            this._showDeleteHabitDialog(context, habit);
+                          },
+                          child: Icon(Icons.delete))
                     ],
                   ))
             ],
@@ -59,9 +69,37 @@ class _HabitsOverviewScreenState extends State<HabitsOverViewScreen> {
 
   Future<List<Habit>> _getAllHabits() async {
     StorageService storageService = locator<StorageService>();
-    // Careful here we do not consider the time for the date.
-    // This is important because at the moment we change the state we would only get the habits which the due date is bigger then now... therefore we always set the time to 00:00
     return storageService.getHabits();
+  }
+
+  void _showEditHabitDialog(BuildContext context, Habit habit) {
+    showDialog(
+        context: context,
+        builder: (_) =>
+            EditHabitDialogWidget(this._onEditHabitFinishedCallback, habit),
+        barrierDismissible: true);
+  }
+
+  void _showDeleteHabitDialog(BuildContext context, Habit habit) {
+    showDialog(
+        context: context,
+        builder: (_) => DeleteHabitDialogWidget(
+            habit, this._onHabitDeleteConfirmedCallback),
+        barrierDismissible: true);
+  }
+
+  void _onEditHabitFinishedCallback(Habit habit) async {
+    StorageService storageService = locator<StorageService>();
+    await storageService.updateHabit(habit);
+    // Needed for updating the widget because the habits have changed...
+    setState(() {});
+  }
+
+  void _onHabitDeleteConfirmedCallback(Habit habit) async {
+    StorageService storageService = locator<StorageService>();
+    await storageService.deleteHabit(habit);
+    // Needed for updating the widget because the habits have changed...
+    setState(() {});
   }
 
   @override

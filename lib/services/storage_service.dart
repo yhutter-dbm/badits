@@ -30,6 +30,17 @@ class StorageService {
     });
   }
 
+  Future<void> updateHabit(Habit habit) async {
+    final database = await _open();
+    await database.update('habits', habit.toMap(),
+        where: 'id = ?', whereArgs: [habit.id]);
+  }
+
+  Future<void> deleteHabit(Habit habit) async {
+    final database = await _open();
+    await database.delete('habits', where: 'id = ?', whereArgs: [habit.id]);
+  }
+
   Future<List<Habit>> getActiveHabitsForDate(DateTime date) async {
     final allHabits = await getHabits();
     // We want all habits where the dueDate is bigger then the date
