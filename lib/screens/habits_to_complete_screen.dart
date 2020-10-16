@@ -20,9 +20,16 @@ class _HabitsToCompleteState extends State<HabitsToComplete> {
     return DateFormat(_dateFormat).format(date);
   }
 
-  Future<List<Habit>> _getHabitsFromStorage() async {
+  DateTime _getDateTimeNowFromMidnight() {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
+  }
+
+  Future<List<Habit>> _getHabitsForToday() async {
     StorageService storageService = locator<StorageService>();
-    return storageService.getHabits();
+    // Careful here we do not consider the time for the date.
+    // This is important because at the moment we change the state we would only get the habits which the due date is bigger then now... therefore we always set the time to 00:00
+    return storageService.getActiveHabitsForDate(_getDateTimeNowFromMidnight());
   }
 
   void _showCreateHabitDialog(BuildContext context) {
@@ -93,7 +100,7 @@ class _HabitsToCompleteState extends State<HabitsToComplete> {
         ),
       ),
       body: FutureBuilder(
-        future: _getHabitsFromStorage(),
+        future: _getHabitsForToday(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             final List<Habit> habits = snapshot.data;

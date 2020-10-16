@@ -29,4 +29,14 @@ class StorageService {
       return Habit.fromMap(maps[index]);
     });
   }
+
+  Future<List<Habit>> getActiveHabitsForDate(DateTime date) async {
+    final allHabits = await getHabits();
+    // We want all habits where the dueDate is bigger then the date
+    final activeHabits = allHabits
+        .where((habit) =>
+            habit.dueDate.isAtSameMomentAs(date) || habit.dueDate.isAfter(date))
+        .toList();
+    return activeHabits;
+  }
 }
