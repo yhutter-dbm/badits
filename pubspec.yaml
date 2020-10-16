@@ -28,6 +28,7 @@ dependencies:
   sqflite:
   path:
   get_it: ^5.0.1
+  flutter_emoji: ">= 2.0.0"
 
 
   # The following adds the Cupertino Icons font to your application.
