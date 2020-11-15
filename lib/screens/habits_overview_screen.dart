@@ -1,8 +1,8 @@
 import 'package:badits/models/habit.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
-import 'package:badits/widgets/delete_habit_dialog_widget.dart';
-import 'package:badits/widgets/edit_habit_dialog_widget.dart';
+import 'package:badits/dialogues/delete_habit_dialog_widget.dart';
+import 'package:badits/dialogues/edit_habit_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';

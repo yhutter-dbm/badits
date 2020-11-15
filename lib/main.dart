@@ -15,7 +15,6 @@ class BaditsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: WELCOME_SCREEN_ROUTE,
-      // TODO: Leave the routes in for now, but we currently do not use them, delete them when not used at the end of the project...
       routes: {
         WELCOME_SCREEN_ROUTE: (context) => WelcomeScreen(),
         HABIT_SUGGESTION_ROUTE: (context) => HabitSuggestionScreen(),

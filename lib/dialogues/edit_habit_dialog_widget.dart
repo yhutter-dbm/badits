@@ -1,5 +1,6 @@
 import 'package:badits/models/habit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
 /*
@@ -7,34 +8,34 @@ Implemented with reference to:
 - https://flutter.dev/docs/cookbook/forms/validation
 - https://medium.com/flutter-community/a-deep-dive-into-datepicker-in-flutter-37e84f7d8d6c
 */
-class CreateHabitDialogWidget extends StatefulWidget {
-  final void Function(Habit habit) onCreateHabitFinishedCallback;
-
+class EditHabitDialogWidget extends StatefulWidget {
+  final void Function(Habit habit) onEditHabitFinishedCallback;
+  final Habit habit;
   @override
-  _CreateHabitDialogWidgetState createState() =>
-      _CreateHabitDialogWidgetState();
+  _EditHabitDialogWidgetState createState() => _EditHabitDialogWidgetState();
 
-  CreateHabitDialogWidget(this.onCreateHabitFinishedCallback);
+  EditHabitDialogWidget(this.habit, this.onEditHabitFinishedCallback);
 }
 
-class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
+class _EditHabitDialogWidgetState extends State<EditHabitDialogWidget> {
   final _formKey = GlobalKey<FormState>();
   final _habitTextNameController = TextEditingController();
   final _habitTextDescriptionController = TextEditingController();
   final _dateFormat = 'dd.MM.yyyy';
-
-  Habit _habit = Habit(name: '', description: '', dueDate: DateTime.now());
+  final _habitDifficultyMinRating =
+      HabitDifficulty.values.first.index.toDouble();
+  final _habitDifficultyNumberOfRatings = HabitDifficulty.values.length - 1;
 
   String _getFormattedDate(DateTime date) {
     return DateFormat(_dateFormat).format(date);
   }
 
-  Future<DateTime> _showDatePicker(BuildContext context) {
-    return showDatePicker(
-        context: context,
-        initialDate: _habit.dueDate,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2025));
+  @override
+  void initState() {
+    // Provide initial text value for controllers...
+    _habitTextNameController.text = this.widget.habit.name;
+    _habitTextDescriptionController.text = this.widget.habit.description;
+    super.initState();
   }
 
   @override
@@ -47,7 +48,7 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Create a new Habit'),
+      title: Text('Edit ${this.widget.habit.name}'),
       content: Form(
           key: _formKey,
           child: Stack(
@@ -77,9 +78,30 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                   Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Text(
-                        'Due Date ${_getFormattedDate(_habit.dueDate)}',
+                        'Due Date ${_getFormattedDate(this.widget.habit.dueDate)}',
                         style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
+                      )),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        'Difficulty',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                  RatingBar.builder(
+                      glow: false,
+                      initialRating:
+                          this.widget.habit.difficulty.index.toDouble(),
+                      minRating: _habitDifficultyMinRating,
+                      itemCount: _habitDifficultyNumberOfRatings,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      ignoreGestures: true,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                      onRatingUpdate: null)
                 ],
               ),
               Positioned(
@@ -88,32 +110,18 @@ class _CreateHabitDialogWidgetState extends State<CreateHabitDialogWidget> {
                 child: FlatButton(
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      _habit.name = _habitTextNameController.text;
-                      _habit.description = _habitTextDescriptionController.text;
-                      this.widget.onCreateHabitFinishedCallback(_habit);
+                      this.widget.habit.name = _habitTextNameController.text;
+                      this.widget.habit.description =
+                          _habitTextDescriptionController.text;
+                      this
+                          .widget
+                          .onEditHabitFinishedCallback(this.widget.habit);
                       Navigator.of(context).pop();
                     }
                   },
                   child: Text('Save'),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                child: FlatButton(
-                  onPressed: () async {
-                    final result = await _showDatePicker(context);
-
-                    // The result can be null if the user has cancelled the date picker.
-                    if (result != null) {
-                      setState(() {
-                        _habit.dueDate = result;
-                      });
-                    }
-                  },
-                  child: Text('Pick a Date'),
-                ),
-              )
             ],
           )),
     );
