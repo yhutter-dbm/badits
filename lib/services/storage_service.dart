@@ -1,4 +1,5 @@
 import 'package:badits/models/habit.dart';
+import 'package:badits/models/habitStatusEntry.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -11,15 +12,27 @@ class StorageService {
   Future<Database> _open() async {
     return await openDatabase(join(await getDatabasesPath(), 'badits.db'),
         version: 1, onCreate: (db, version) {
-      return db.execute("""
+      // Note in order to create multiple tables we have to call db.execute multiple times...
+      // https://stackoverflow.com/questions/54316131/how-to-create-multiple-tables-in-a-database-in-sqflite
+      db.execute("""
           CREATE TABLE habits
             (
-              id INTEGER PRIMARY KEY,
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
               name TEXT, 
               description TEXT,
               dueDate TEXT,
               difficulty INTEGER
-            )
+            );
+          """);
+
+      return db.execute("""
+          CREATE TABLE habitStatusEntries
+            (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              habitId INTEGER REFERENCES habits(id),
+              dueDate TEXT,
+              completed INTEGER
+            );
           """);
     });
   }
@@ -30,11 +43,26 @@ class StorageService {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<void> insertHabitStatusEntry(HabitStatusEntry habitStatusEntry) async {
+    final database = await _open();
+    database.insert('habitStatusEntries', habitStatusEntry.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
   Future<List<Habit>> getHabits() async {
     final database = await _open();
     final List<Map<String, dynamic>> maps = await database.query('habits');
     return List.generate(maps.length, (index) {
       return Habit.fromMap(maps[index]);
+    });
+  }
+
+  Future<List<HabitStatusEntry>> getHabitStatusEntries() async {
+    final database = await _open();
+    final List<Map<String, dynamic>> maps =
+        await database.query('habitStatusEntries');
+    return List.generate(maps.length, (index) {
+      return HabitStatusEntry.fromMap(maps[index]);
     });
   }
 
@@ -51,11 +79,19 @@ class StorageService {
 
   Future<List<Habit>> getActiveHabitsForDate(DateTime date) async {
     final allHabits = await getHabits();
+    final allHabitStatusEntries = await getHabitStatusEntries();
     // We want all habits where the dueDate is bigger then the date
-    final activeHabits = allHabits
-        .where((habit) =>
-            habit.dueDate.isAtSameMomentAs(date) || habit.dueDate.isAfter(date))
-        .toList();
+    final activeHabits = allHabits.where((habit) {
+      final isHabitForToday =
+          habit.dueDate.isAtSameMomentAs(date) || habit.dueDate.isAfter(date);
+
+      // Check if a habit status entry does already exist, if so this habit has already been marked as 'completed' or 'not completed'
+      final doesHabitStatusEntryAlreadyExist = allHabitStatusEntries
+              .where((habitStatus) => habitStatus.habitId == habit.id)
+              .length >
+          0;
+      return isHabitForToday && !doesHabitStatusEntryAlreadyExist;
+    }).toList();
     return activeHabits;
   }
 }

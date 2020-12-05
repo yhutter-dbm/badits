@@ -1,4 +1,5 @@
 import 'package:badits/models/habit.dart';
+import 'package:badits/models/habitStatusEntry.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,18 @@ class _HabitsToCompleteState extends State<HabitsToComplete> {
     setState(() {});
   }
 
+  void _completeHabit(Habit habit, bool completed) async {
+    StorageService storageService = locator<StorageService>();
+    final habitStatusEntry = HabitStatusEntry(
+      habitId: habit.id,
+      dueDate: DateTime.now(),
+      completed: completed,
+    );
+    await storageService.insertHabitStatusEntry(habitStatusEntry);
+    // Needed for updating the widget because the habits have changed...
+    setState(() {});
+  }
+
   List<Widget> _generateHabitList(List<Habit> habits) {
     return List.generate(habits.length, (index) {
       final habit = habits[index];
@@ -74,8 +87,12 @@ class _HabitsToCompleteState extends State<HabitsToComplete> {
                   right: 0,
                   child: Row(
                     children: [
-                      FlatButton(onPressed: null, child: Text('Not Completed')),
-                      FlatButton(onPressed: null, child: Text('Completed'))
+                      FlatButton(
+                          onPressed: () => _completeHabit(habit, false),
+                          child: Text('Not Completed')),
+                      FlatButton(
+                          onPressed: () => _completeHabit(habit, true),
+                          child: Text('Completed'))
                     ],
                   ))
             ],
