@@ -82,12 +82,13 @@ class StorageService {
     final allHabitStatusEntries = await getHabitStatusEntries();
     // We want all habits where the dueDate is bigger then the date
     final activeHabits = allHabits.where((habit) {
-      final isHabitForToday =
-          habit.dueDate.isAtSameMomentAs(date) || habit.dueDate.isAfter(date);
+      final isHabitForToday = habit.dueDate.isAtSameMomentAs(date);
 
       // Check if a habit status entry does already exist, if so this habit has already been marked as 'completed' or 'not completed'
       final doesHabitStatusEntryAlreadyExist = allHabitStatusEntries
-              .where((habitStatus) => habitStatus.habitId == habit.id)
+              .where((habitStatus) =>
+                  habitStatus.habitId == habit.id &&
+                  habitStatus.dueDate.isAtSameMomentAs(habit.dueDate))
               .length >
           0;
       return isHabitForToday && !doesHabitStatusEntryAlreadyExist;
