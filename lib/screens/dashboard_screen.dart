@@ -12,12 +12,12 @@ class DashboardScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Dashboard'),
           centerTitle: true,
-          bottom: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.check)),
-              Tab(icon: Icon(Icons.data_usage))
-            ],
-          ),
+        ),
+        bottomNavigationBar: TabBar(
+          tabs: [
+            Tab(icon: Icon(Icons.check)),
+            Tab(icon: Icon(Icons.data_usage))
+          ],
         ),
         body: TabBarView(
           children: [HabitsForTodayScreen(), HabitsOverViewScreen()],
