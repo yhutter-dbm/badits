@@ -1,5 +1,5 @@
 import 'package:badits/screens/habits_overview_screen.dart';
-import 'package:badits/screens/habits_to_complete_screen.dart';
+import 'package:badits/screens/habits_for_today_screen.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -20,7 +20,7 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [HabitsToComplete(), HabitsOverViewScreen()],
+          children: [HabitsForTodayScreen(), HabitsOverViewScreen()],
         ),
       ),
     );

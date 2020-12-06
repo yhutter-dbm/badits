@@ -8,12 +8,12 @@ import 'package:intl/intl.dart';
 
 import '../dialogues/create_habit_dialog_widget.dart';
 
-class HabitsToComplete extends StatefulWidget {
+class HabitsForTodayScreen extends StatefulWidget {
   @override
-  _HabitsToCompleteState createState() => _HabitsToCompleteState();
+  _HabitsForTodayScreenState createState() => _HabitsForTodayScreenState();
 }
 
-class _HabitsToCompleteState extends State<HabitsToComplete> {
+class _HabitsForTodayScreenState extends State<HabitsForTodayScreen> {
   final _dateFormat = 'dd.MM.yyyy';
   final _emojiParser = EmojiParser();
 
