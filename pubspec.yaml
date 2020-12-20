@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_svg: ^0.19.0
   flutter:
     sdk: flutter
   intl: ^0.16.1
@@ -52,8 +53,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # assets:
-  #   - images/welcome_screen.png
+  assets:
+    - assets/images/chilling.png
+    - assets/icons/arrow.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -67,7 +69,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   
-  #fonts:
-  #- family: TitleFont
-  #  fonts:
-  #    - asset: fonts/Anton-Regular.ttf
+  fonts:
+  - family: ObibokRegular
+    fonts:
+      - asset: fonts/ObibokRegular.ttf
+
+  - family: ObibokBold
+    fonts:
+      - asset: fonts/ObibokBold.ttf
