@@ -6,21 +6,45 @@ class DummyDataHelper {
     return [
       Habit(
           id: 0,
-          name: 'Habit One',
-          description: lipsum.createWord(numWords: 10),
-          dueDate: DateTime.now()),
+          name: 'Do Sport',
+          description: '',
+          dueDate: DateTime.now(),
+          assetIcon: 'assets/icons/fitness_icon.svg'),
       Habit(
           id: 1,
-          name: 'Habit Two',
-          description: lipsum.createWord(numWords: 10),
+          name: 'Save Energy',
+          description: '',
           dueDate: DateTime.now(),
-          difficulty: HabitDifficulty.medium),
+          difficulty: HabitDifficulty.medium,
+          assetIcon: 'assets/icons/energy.svg'),
       Habit(
           id: 2,
-          name: 'Habit Three',
-          description: lipsum.createWord(numWords: 10),
+          name: 'Be healthy',
+          description: '',
           dueDate: DateTime.now(),
-          difficulty: HabitDifficulty.hard),
+          difficulty: HabitDifficulty.hard,
+          assetIcon: 'assets/icons/healthy.svg'),
+      Habit(
+          id: 3,
+          name: 'Save Money',
+          description: '',
+          dueDate: DateTime.now(),
+          difficulty: HabitDifficulty.hard,
+          assetIcon: 'assets/icons/money.svg'),
+      Habit(
+          id: 4,
+          name: 'Draw',
+          description: '',
+          dueDate: DateTime.now(),
+          difficulty: HabitDifficulty.hard,
+          assetIcon: 'assets/icons/draw.svg'),
+      Habit(
+          id: 4,
+          name: 'Planet',
+          description: 'Love your Planet',
+          dueDate: DateTime.now(),
+          difficulty: HabitDifficulty.hard,
+          assetIcon: 'assets/icons/planet.svg'),
     ];
   }
 }

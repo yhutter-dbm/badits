@@ -1,4 +1,5 @@
 import 'package:badits/models/habit.dart';
+import 'package:badits/models/routes.dart';
 import 'package:badits/screens/dashboard_screen.dart';
 import 'package:badits/screens/habit_suggestion_screen.dart';
 import 'package:badits/services/service_locator.dart';
@@ -20,13 +21,6 @@ class WelcomeScreen extends StatelessWidget {
     return FutureBuilder(
         future: _getHabitsFromStorage(),
         builder: (context, snapshot) {
-          final List<Habit> habits = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.done) {
-            // if (habits.length > 0) {
-            //   return DashboardScreen();
-            // }
-            // return HabitSuggestionScreen();
-          }
           return Scaffold(
             backgroundColor: Colors.white,
             body: Container(
@@ -58,7 +52,19 @@ class WelcomeScreen extends StatelessWidget {
                       children: [
                         Spacer(),
                         FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              final List<Habit> habits = snapshot.data;
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (habits.length > 0) {
+                                  Navigator.pushReplacementNamed(
+                                      context, DASHBOARD_SCREEN_ROUTE);
+                                } else {
+                                  Navigator.pushReplacementNamed(
+                                      context, HABIT_SUGGESTION_ROUTE);
+                                }
+                              }
+                            },
                             child: Row(
                               children: [
                                 Text('Continue',

@@ -10,13 +10,15 @@ class Habit {
   String description;
   DateTime dueDate;
   HabitDifficulty difficulty;
+  String assetIcon;
 
   Habit(
       {this.id,
       this.name,
       this.description,
       this.dueDate,
-      this.difficulty = HabitDifficulty.easy});
+      this.difficulty = HabitDifficulty.easy,
+      this.assetIcon = ''});
 
   // Deserialize a habit from database into an actual object
   static Habit fromMap(Map<String, dynamic> map) {

@@ -56,6 +56,14 @@ flutter:
   assets:
     - assets/images/chilling.png
     - assets/icons/arrow.svg
+    - assets/icons/check.svg
+    - assets/icons/draw.svg
+    - assets/icons/fitness_icon.svg
+    - assets/icons/healthy.svg
+    - assets/icons/money.svg
+    - assets/icons/planet.svg
+    - assets/icons/energy.svg
+    - assets/icons/plus_button.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
