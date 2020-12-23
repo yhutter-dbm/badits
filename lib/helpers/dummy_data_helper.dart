@@ -1,4 +1,5 @@
 import 'package:badits/models/habit.dart';
+import 'package:badits/models/habitDuration.dart';
 import 'package:lipsum/lipsum.dart' as lipsum;
 
 class DummyDataHelper {
@@ -7,44 +8,39 @@ class DummyDataHelper {
       Habit(
           id: 0,
           name: 'Do Sport',
-          description: '',
           dueDate: DateTime.now(),
-          assetIcon: 'assets/icons/fitness_icon.svg'),
+          assetIcon: 'assets/icons/fitness_icon.svg',
+          duration: HabitDuration.daily),
       Habit(
           id: 1,
           name: 'Save Energy',
-          description: '',
           dueDate: DateTime.now(),
-          difficulty: HabitDifficulty.medium,
-          assetIcon: 'assets/icons/energy.svg'),
+          assetIcon: 'assets/icons/energy.svg',
+          duration: HabitDuration.daily),
       Habit(
           id: 2,
           name: 'Be healthy',
-          description: '',
           dueDate: DateTime.now(),
-          difficulty: HabitDifficulty.hard,
-          assetIcon: 'assets/icons/healthy.svg'),
+          assetIcon: 'assets/icons/healthy.svg',
+          duration: HabitDuration.daily),
       Habit(
           id: 3,
           name: 'Save Money',
-          description: '',
           dueDate: DateTime.now(),
-          difficulty: HabitDifficulty.hard,
-          assetIcon: 'assets/icons/money.svg'),
+          assetIcon: 'assets/icons/money.svg',
+          duration: HabitDuration.daily),
       Habit(
           id: 4,
           name: 'Draw',
-          description: '',
           dueDate: DateTime.now(),
-          difficulty: HabitDifficulty.hard,
-          assetIcon: 'assets/icons/draw.svg'),
+          assetIcon: 'assets/icons/draw.svg',
+          duration: HabitDuration.daily),
       Habit(
           id: 4,
           name: 'Planet',
-          description: 'Love your Planet',
           dueDate: DateTime.now(),
-          difficulty: HabitDifficulty.hard,
-          assetIcon: 'assets/icons/planet.svg'),
+          assetIcon: 'assets/icons/planet.svg',
+          duration: HabitDuration.daily),
     ];
   }
 }

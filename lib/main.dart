@@ -1,3 +1,4 @@
+import 'package:badits/screens/create_habit_screen.dart';
 import 'package:badits/screens/dashboard_screen.dart';
 import 'package:badits/screens/habit_suggestion_screen.dart';
 import 'package:badits/models/routes.dart';
@@ -19,6 +20,7 @@ class BaditsApp extends StatelessWidget {
         WELCOME_SCREEN_ROUTE: (context) => WelcomeScreen(),
         HABIT_SUGGESTION_ROUTE: (context) => HabitSuggestionScreen(),
         DASHBOARD_SCREEN_ROUTE: (context) => DashboardScreen(),
+        CREATE_HABIT_ROUTE: (context) => CreateHabitScreen(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: Colors.white),

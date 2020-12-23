@@ -1,16 +1,11 @@
 import 'package:badits/models/habit.dart';
 import 'package:badits/models/routes.dart';
-import 'package:badits/screens/dashboard_screen.dart';
-import 'package:badits/screens/habit_suggestion_screen.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  final _emojiParser = EmojiParser();
-
   Future<List<Habit>> _getHabitsFromStorage() async {
     StorageService storageService = locator<StorageService>();
     return storageService.getHabits();

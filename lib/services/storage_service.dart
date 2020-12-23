@@ -19,9 +19,8 @@ class StorageService {
             (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               name TEXT, 
-              description TEXT,
               dueDate TEXT,
-              difficulty INTEGER
+              duration INTEGER
             );
           """);
 

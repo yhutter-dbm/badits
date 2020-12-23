@@ -69,20 +69,18 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_emoji:
+  flutter_date_pickers:
     dependency: "direct main"
     description:
-      name: flutter_emoji
+      name: flutter_date_pickers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1+1"
-  flutter_rating_bar:
-    dependency: "direct main"
-    description:
-      name: flutter_rating_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.0"
+    version: "0.1.8"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -151,13 +149,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
-  pedantic:
-    dependency: transitive
-    description:
-      name: pedantic
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.2"
   petitparser:
     dependency: transitive
     description:

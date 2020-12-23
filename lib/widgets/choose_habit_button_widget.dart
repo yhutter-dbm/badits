@@ -1,18 +1,19 @@
+import 'package:badits/models/colors.dart';
 import 'package:badits/models/habit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HabitSuggestionButtonWidget extends StatefulWidget {
+class ChooseHabitButtonWidget extends StatefulWidget {
   final Habit habit;
+  Function onSelectionChanged;
   @override
-  _HabitSuggestionButtonWidgetState createState() =>
-      _HabitSuggestionButtonWidgetState();
+  _ChooseHabitButtonWidgetState createState() =>
+      _ChooseHabitButtonWidgetState();
 
-  const HabitSuggestionButtonWidget({this.habit});
+  ChooseHabitButtonWidget({this.habit, this.onSelectionChanged});
 }
 
-class _HabitSuggestionButtonWidgetState
-    extends State<HabitSuggestionButtonWidget> {
+class _ChooseHabitButtonWidgetState extends State<ChooseHabitButtonWidget> {
   bool _isSelected = false;
 
   get isSelected => _isSelected;
@@ -23,6 +24,7 @@ class _HabitSuggestionButtonWidgetState
         onTap: () {
           setState(() {
             _isSelected = !_isSelected;
+            this.widget.onSelectionChanged(this.widget.habit, _isSelected);
           });
         },
         child: Container(
@@ -34,9 +36,7 @@ class _HabitSuggestionButtonWidgetState
             ),
           ),
           decoration: new BoxDecoration(
-            color: _isSelected
-                ? Color.fromARGB(255, 255, 86, 120)
-                : Color.fromARGB(255, 225, 225, 225),
+            color: _isSelected ? BADITS_PINK : BADITS_GRAY,
           ),
         ));
   }

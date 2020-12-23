@@ -1,3 +1,4 @@
+import 'package:badits/models/habitDuration.dart';
 import 'package:intl/intl.dart';
 
 enum HabitDifficulty { none, easy, medium, hard }
@@ -7,27 +8,19 @@ class Habit {
 
   int id;
   String name;
-  String description;
   DateTime dueDate;
-  HabitDifficulty difficulty;
   String assetIcon;
+  HabitDuration duration;
 
-  Habit(
-      {this.id,
-      this.name,
-      this.description,
-      this.dueDate,
-      this.difficulty = HabitDifficulty.easy,
-      this.assetIcon = ''});
+  Habit({this.id, this.name, this.dueDate, this.duration, this.assetIcon = ''});
 
   // Deserialize a habit from database into an actual object
   static Habit fromMap(Map<String, dynamic> map) {
     return Habit(
         id: map['id'],
         name: map['name'],
-        description: map['description'],
         dueDate: DateFormat(_dateFormat).parse(map['dueDate']),
-        difficulty: HabitDifficulty.values[map['difficulty']]);
+        duration: HabitDuration.values[map['duration']]);
   }
 
   // Serialize a habit to put into the database
@@ -35,9 +28,8 @@ class Habit {
     return {
       'id': id,
       'name': name,
-      'description': description,
       'dueDate': DateFormat(_dateFormat).format(dueDate),
-      'difficulty': difficulty.index
+      'duration': duration.index
     };
   }
 }
