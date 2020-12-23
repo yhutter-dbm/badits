@@ -1,11 +1,10 @@
+import 'package:badits/models/constants.dart';
 import 'package:badits/models/habitDuration.dart';
 import 'package:intl/intl.dart';
 
 enum HabitDifficulty { none, easy, medium, hard }
 
 class Habit {
-  static final _dateFormat = 'dd.MM.yyyy';
-
   int id;
   String name;
   DateTime dueDate;
@@ -19,7 +18,7 @@ class Habit {
     return Habit(
         id: map['id'],
         name: map['name'],
-        dueDate: DateFormat(_dateFormat).parse(map['dueDate']),
+        dueDate: DateFormat(BADITS_DATEFORMAT).parse(map['dueDate']),
         duration: HabitDuration.values[map['duration']]);
   }
 
@@ -28,7 +27,7 @@ class Habit {
     return {
       'id': id,
       'name': name,
-      'dueDate': DateFormat(_dateFormat).format(dueDate),
+      'dueDate': DateFormat(BADITS_DATEFORMAT).format(dueDate),
       'duration': duration.index
     };
   }

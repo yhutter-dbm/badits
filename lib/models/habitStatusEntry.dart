@@ -1,9 +1,8 @@
 import 'package:badits/helpers/converter.dart';
+import 'package:badits/models/constants.dart';
 import 'package:intl/intl.dart';
 
 class HabitStatusEntry {
-  static final _dateFormat = 'dd.MM.yyyy';
-
   int id;
   int habitId;
   DateTime dueDate;
@@ -16,7 +15,7 @@ class HabitStatusEntry {
     return HabitStatusEntry(
         id: map['id'],
         habitId: map['habitId'],
-        dueDate: DateFormat(_dateFormat).parse(map['dueDate']),
+        dueDate: DateFormat(BADITS_DATEFORMAT).parse(map['dueDate']),
         completed: Converter.toBool(map['completed'] as int));
   }
 
@@ -25,7 +24,7 @@ class HabitStatusEntry {
     return {
       'id': id,
       'habitId': habitId,
-      'dueDate': DateFormat(_dateFormat).format(dueDate),
+      'dueDate': DateFormat(BADITS_DATEFORMAT).format(dueDate),
       'completed': Converter.toInt(completed)
     };
   }

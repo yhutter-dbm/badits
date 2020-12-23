@@ -1,5 +1,6 @@
 import 'package:badits/helpers/random_helper.dart';
 import 'package:badits/models/colors.dart';
+import 'package:badits/models/constants.dart';
 import 'package:badits/models/habit.dart';
 import 'package:badits/models/habitDuration.dart';
 import 'package:badits/screen_arguments/create_habit_screen_arguments.dart';
@@ -8,6 +9,7 @@ import 'package:badits/widgets/confirm_button_widget.dart';
 import 'package:badits/widgets/habit_duration_selection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
+import 'package:intl/intl.dart';
 
 /*
 Implemented with reference to:
@@ -21,7 +23,6 @@ class CreateHabitScreen extends StatefulWidget {
 class _CreateHabitScreenState extends State<CreateHabitScreen> {
   final _formKey = GlobalKey<FormState>();
   final _habitTextNameController = TextEditingController();
-  final _dateFormat = 'dd.MM.yyyy';
   final DateTime _now = DateTime.now();
   final dp.DatePickerStyles _datePickerStyles = dp.DatePickerRangeStyles(
       disabledDateStyle:
@@ -75,6 +76,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
               Form(
                   key: _formKey,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       TextFormField(
                         controller: _habitTextNameController,
@@ -90,6 +92,32 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                           }
                           return null;
                         },
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom:
+                                    BorderSide(width: 1, color: Colors.black))),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Deadline',
+                              style: TextStyle(
+                                  fontFamily: 'ObibokRegular', fontSize: 10),
+                            ),
+                            Spacer(),
+                            Text(
+                              DateFormat(BADITS_DATEFORMAT)
+                                  .format(_selectedDate),
+                              style: TextStyle(
+                                  fontFamily: 'ObibokRegular',
+                                  fontSize: 10,
+                                  color: BADITS_DARKER_GRAY),
+                            )
+                          ],
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 30),
