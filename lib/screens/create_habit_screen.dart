@@ -1,3 +1,4 @@
+import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/helpers/random_helper.dart';
 import 'package:badits/models/colors.dart';
 import 'package:badits/models/constants.dart';
@@ -109,8 +110,8 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                             ),
                             Spacer(),
                             Text(
-                              DateFormat(BADITS_DATEFORMAT)
-                                  .format(_selectedDate),
+                              DateTimeHelper.getBaditsDateTimeString(
+                                  _selectedDate),
                               style: TextStyle(
                                   fontFamily: 'ObibokRegular',
                                   fontSize: 10,

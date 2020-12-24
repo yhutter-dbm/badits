@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/models/colors.dart';
 import 'package:badits/models/constants.dart';
 import 'package:badits/models/habit.dart';
@@ -17,14 +18,25 @@ class HabitProgressWidget extends StatefulWidget {
 }
 
 class _HabitProgressWidgetState extends State<HabitProgressWidget> {
+  final DateTime _now = DateTime.now();
+
   bool _habitInProgress = false;
   double _habitProgress = 50;
+  String _nextDateString = '';
 
   @override
   void initState() {
     _habitInProgress = new Random().nextBool();
     _habitProgress =
         _habitInProgress ? new Random().nextDouble() * 50 + 100 : 0.0;
+
+    final nextDate = this.widget.habit.getNextDate(_now);
+    if (nextDate != null) {
+      _nextDateString =
+          'Next: ${DateTimeHelper.getBaditsDateTimeString(nextDate)}';
+    } else {
+      _nextDateString = 'Pass Due';
+    }
     super.initState();
   }
 
@@ -49,7 +61,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Deadline ${DateFormat(BADITS_DATEFORMAT).format(this.widget.habit.dueDate)}',
+                        'Deadline ${DateTimeHelper.getBaditsDateTimeString(this.widget.habit.dueDate)}',
                         style: TextStyle(
                             fontFamily: 'ObibokRegular',
                             fontSize: 10,
@@ -75,8 +87,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      // TODO: Calculate next correctly...
-                      Text('Next: 10.01.2020',
+                      Text(_nextDateString,
                           style: TextStyle(
                               fontFamily: 'ObibokRegular',
                               fontSize: 10,
