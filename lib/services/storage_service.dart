@@ -20,6 +20,7 @@ class StorageService {
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               name TEXT, 
               dueDate TEXT,
+              assetIcon TEXT,
               duration INTEGER
             );
           """);

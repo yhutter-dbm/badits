@@ -18,6 +18,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _loadHabits() async {
     StorageService storageService = locator<StorageService>();
     _habits = await storageService.getHabits();
+    setState(() {});
   }
 
   @override

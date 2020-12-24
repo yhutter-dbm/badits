@@ -19,6 +19,7 @@ class Habit {
         id: map['id'],
         name: map['name'],
         dueDate: DateFormat(BADITS_DATEFORMAT).parse(map['dueDate']),
+        assetIcon: map['assetIcon'],
         duration: HabitDuration.values[map['duration']]);
   }
 
@@ -28,6 +29,7 @@ class Habit {
       'id': id,
       'name': name,
       'dueDate': DateFormat(BADITS_DATEFORMAT).format(dueDate),
+      'assetIcon': assetIcon,
       'duration': duration.index
     };
   }
