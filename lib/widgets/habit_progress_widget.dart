@@ -23,6 +23,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
 
   @override
   void initState() {
+    // TODO: Calculate progress correctly.
     _habitInProgress = new Random().nextBool();
     _habitProgress =
         _habitInProgress ? new Random().nextDouble() * 50 + 100 : 0.0;
@@ -90,10 +91,12 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                               fontSize: 10,
                               color: BADITS_PINK)),
                       Container(
+                          // TODO: Add ability to complete a habit.
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: SvgPicture.asset('assets/icons/check.svg',
                               color: Colors.black)),
                       Spacer(),
+                      // TODO: Calculate number of times this habits has to be completed correctly.
                       Text('4/10',
                           style: TextStyle(
                               fontFamily: 'ObibokRegular',
