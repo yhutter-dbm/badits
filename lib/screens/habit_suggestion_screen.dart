@@ -15,10 +15,7 @@ class HabitSuggestionScreen extends StatefulWidget {
 }
 
 class _HabitSuggestionScreenState extends State<HabitSuggestionScreen> {
-  final List<ChooseHabitButtonWidget> _habitSuggestions =
-      DummyDataHelper.getHabits()
-          .map((habit) => ChooseHabitButtonWidget(habit: habit))
-          .toList();
+  List<ChooseHabitButtonWidget> _habitSuggestions = [];
 
   List<Habit> _choosenHabits = [];
 
@@ -32,9 +29,10 @@ class _HabitSuggestionScreenState extends State<HabitSuggestionScreen> {
 
   @override
   void initState() {
-    _habitSuggestions.forEach((suggestion) {
-      suggestion.onSelectionChanged = _updateChoosenHabits;
-    });
+    _habitSuggestions = DummyDataHelper.getHabits()
+        .map((habit) => ChooseHabitButtonWidget(
+            habit: habit, onSelectionChanged: _updateChoosenHabits))
+        .toList();
     super.initState();
   }
 

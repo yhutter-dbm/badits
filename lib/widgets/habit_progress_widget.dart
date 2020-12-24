@@ -1,12 +1,9 @@
 import 'dart:math';
-
 import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/models/colors.dart';
-import 'package:badits/models/constants.dart';
 import 'package:badits/models/habit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 class HabitProgressWidget extends StatefulWidget {
   final Habit habit;

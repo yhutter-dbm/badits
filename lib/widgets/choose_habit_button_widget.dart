@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ChooseHabitButtonWidget extends StatefulWidget {
   final Habit habit;
-  Function onSelectionChanged;
+  final Function onSelectionChanged;
   @override
   _ChooseHabitButtonWidgetState createState() =>
       _ChooseHabitButtonWidgetState();

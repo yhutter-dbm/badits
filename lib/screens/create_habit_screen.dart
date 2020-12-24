@@ -1,7 +1,6 @@
 import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/helpers/random_helper.dart';
 import 'package:badits/models/colors.dart';
-import 'package:badits/models/constants.dart';
 import 'package:badits/models/habit.dart';
 import 'package:badits/models/habitDuration.dart';
 import 'package:badits/screen_arguments/create_habit_screen_arguments.dart';
@@ -10,7 +9,6 @@ import 'package:badits/widgets/confirm_button_widget.dart';
 import 'package:badits/widgets/habit_duration_selection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
-import 'package:intl/intl.dart';
 
 /*
 Implemented with reference to:

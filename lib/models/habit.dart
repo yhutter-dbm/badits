@@ -1,7 +1,5 @@
 import 'package:badits/helpers/date_time_helper.dart';
-import 'package:badits/models/constants.dart';
 import 'package:badits/models/habitDuration.dart';
-import 'package:intl/intl.dart';
 import 'package:date_util/date_util.dart';
 
 enum HabitDifficulty { none, easy, medium, hard }
@@ -27,6 +25,7 @@ class Habit {
         duration: HabitDuration.values[map['duration']]);
   }
 
+  // ignore: missing_return
   Duration _getDuration(DateTime dateTime) {
     switch (duration) {
       case HabitDuration.daily:
