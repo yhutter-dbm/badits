@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/models/colors.dart';
 import 'package:badits/models/habit.dart';
+import 'package:badits/models/habitStatusEntry.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +30,9 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
     StorageService storageService = locator<StorageService>();
     final habitStatusEntries =
         await storageService.getHabitStatusEntriesForHabit(this.widget.habit);
-    _currentCompletionCount = habitStatusEntries.length;
-    setState(() {});
+    setState(() {
+      _currentCompletionCount = habitStatusEntries.length;
+    });
   }
 
   @override
@@ -105,13 +107,22 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                               fontFamily: 'ObibokRegular',
                               fontSize: 10,
                               color: BADITS_PINK)),
-                      Container(
-                          // TODO: Add ability to complete a habit.
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: SvgPicture.asset('assets/icons/check.svg',
-                              color: Colors.black)),
+                      GestureDetector(
+                          onTap: () async {
+                            StorageService storageService =
+                                locator<StorageService>();
+                            final HabitStatusEntry entry = HabitStatusEntry(
+                                habitId: this.widget.habit.id,
+                                date: DateTime.now());
+                            await storageService.insertHabitStatusEntry(entry);
+                            _updateCurrentCompletionCount();
+                            // TODO: Update next date and gray out (no longer do anything on tap) for today also update the progress.
+                          },
+                          child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: SvgPicture.asset('assets/icons/check.svg',
+                                  color: Colors.black))),
                       Spacer(),
-                      // TODO: Calculate number of times this habits has to be completed correctly.
                       Text('$_currentCompletionCount/$_completionCount',
                           style: TextStyle(
                               fontFamily: 'ObibokRegular',

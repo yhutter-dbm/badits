@@ -8,6 +8,7 @@ class DummyDataHelper {
           id: 0,
           name: 'Do Sport',
           dueDate: DateTime.now().add(Duration(days: 5)),
+          creationDate: DateTime.now(),
           assetIcon: 'assets/icons/fitness_icon.svg',
           duration: HabitDuration.daily),
       Habit(

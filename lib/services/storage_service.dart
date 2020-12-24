@@ -31,8 +31,7 @@ class StorageService {
             (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               habitId INTEGER REFERENCES habits(id),
-              dueDate TEXT,
-              completed INTEGER
+              date TEXT
             );
           """);
     });
@@ -61,8 +60,10 @@ class StorageService {
   Future<List<HabitStatusEntry>> getHabitStatusEntriesForHabit(
       Habit habit) async {
     final database = await _open();
-    final List<Map<String, dynamic>> maps = await database
-        .query('habitStatusEntries', where: 'id = ?', whereArgs: [habit.id]);
+    final List<Map<String, dynamic>> maps = await database.query(
+        'habitStatusEntries',
+        where: 'habitId = ?',
+        whereArgs: [habit.id]);
     return List.generate(maps.length, (index) {
       return HabitStatusEntry.fromMap(maps[index]);
     });
