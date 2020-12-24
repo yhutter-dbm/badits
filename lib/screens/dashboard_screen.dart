@@ -74,7 +74,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Navigator.pushNamed(context, CREATE_HABIT_ROUTE,
                           arguments: CreateHabitScreenArguments(
                               onDone: (Habit habit) async {
-                        // TODO...
+                        StorageService storageService =
+                            locator<StorageService>();
+                        await storageService.insertHabit(habit);
+                        _loadHabits();
                       }));
                     },
                   )
