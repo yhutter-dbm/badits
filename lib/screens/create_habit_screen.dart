@@ -162,6 +162,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                             assetIcon: randomAssetIcon,
                             name: _habitTextNameController.value.text,
                             dueDate: _selectedDate,
+                            creationDate: DateTime.now(),
                             duration: _habitDuration);
 
                         // Call done callback passed via arguments of route...

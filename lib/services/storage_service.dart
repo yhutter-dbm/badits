@@ -20,6 +20,7 @@ class StorageService {
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               name TEXT, 
               dueDate TEXT,
+              creationDate TEXT,
               assetIcon TEXT,
               duration INTEGER
             );
@@ -57,42 +58,13 @@ class StorageService {
     });
   }
 
-  Future<List<HabitStatusEntry>> getHabitStatusEntries() async {
+  Future<List<HabitStatusEntry>> getHabitStatusEntriesForHabit(
+      Habit habit) async {
     final database = await _open();
-    final List<Map<String, dynamic>> maps =
-        await database.query('habitStatusEntries');
+    final List<Map<String, dynamic>> maps = await database
+        .query('habitStatusEntries', where: 'id = ?', whereArgs: [habit.id]);
     return List.generate(maps.length, (index) {
       return HabitStatusEntry.fromMap(maps[index]);
     });
-  }
-
-  Future<void> updateHabit(Habit habit) async {
-    final database = await _open();
-    await database.update('habits', habit.toMap(),
-        where: 'id = ?', whereArgs: [habit.id]);
-  }
-
-  Future<void> deleteHabit(Habit habit) async {
-    final database = await _open();
-    await database.delete('habits', where: 'id = ?', whereArgs: [habit.id]);
-  }
-
-  Future<List<Habit>> getActiveHabitsForDate(DateTime date) async {
-    final allHabits = await getHabits();
-    final allHabitStatusEntries = await getHabitStatusEntries();
-    // We want all habits where the dueDate is bigger then the date
-    final activeHabits = allHabits.where((habit) {
-      final isHabitForToday = habit.dueDate.isAtSameMomentAs(date);
-
-      // Check if a habit status entry does already exist, if so this habit has already been marked as 'completed' or 'not completed'
-      final doesHabitStatusEntryAlreadyExist = allHabitStatusEntries
-              .where((habitStatus) =>
-                  habitStatus.habitId == habit.id &&
-                  habitStatus.dueDate.isAtSameMomentAs(habit.dueDate))
-              .length >
-          0;
-      return isHabitForToday && !doesHabitStatusEntryAlreadyExist;
-    }).toList();
-    return activeHabits;
   }
 }

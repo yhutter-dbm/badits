@@ -8,12 +8,19 @@ class Habit {
   int id;
   String name;
   DateTime dueDate;
+  DateTime creationDate;
   String assetIcon;
   HabitDuration duration;
 
   final _dateUtility = DateUtil();
 
-  Habit({this.id, this.name, this.dueDate, this.duration, this.assetIcon = ''});
+  Habit(
+      {this.id,
+      this.name,
+      this.dueDate,
+      this.creationDate,
+      this.duration,
+      this.assetIcon = ''});
 
   // Deserialize a habit from database into an actual object
   static Habit fromMap(Map<String, dynamic> map) {
@@ -21,6 +28,8 @@ class Habit {
         id: map['id'],
         name: map['name'],
         dueDate: DateTimeHelper.getBaditsDateTimeFromString(map['dueDate']),
+        creationDate:
+            DateTimeHelper.getBaditsDateTimeFromString(map['creationDate']),
         assetIcon: map['assetIcon'],
         duration: HabitDuration.values[map['duration']]);
   }
@@ -52,6 +61,7 @@ class Habit {
       'id': id,
       'name': name,
       'dueDate': DateTimeHelper.getBaditsDateTimeString(dueDate),
+      'creationDate': DateTimeHelper.getBaditsDateTimeString(creationDate),
       'assetIcon': assetIcon,
       'duration': duration.index
     };
@@ -73,6 +83,25 @@ class Habit {
       return 0;
     }
     return dueDateSortResult;
+  }
+
+  // ignore: missing_return
+  int getCountUntilCompletion() {
+    final difference = this.dueDate.difference(this.creationDate);
+    switch (duration) {
+      case HabitDuration.daily:
+        {
+          return difference.inDays;
+        }
+      case HabitDuration.weekly:
+        {
+          return difference.inDays ~/ 7;
+        }
+      case HabitDuration.monthly:
+        {
+          return this.dueDate.month - this.creationDate.month;
+        }
+    }
   }
 
   DateTime getNextDate(DateTime dateTime) {

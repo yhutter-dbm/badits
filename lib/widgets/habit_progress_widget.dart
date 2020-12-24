@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/models/colors.dart';
 import 'package:badits/models/habit.dart';
+import 'package:badits/services/service_locator.dart';
+import 'package:badits/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -20,6 +22,16 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
   bool _habitInProgress = false;
   double _habitProgress = 50;
   String _nextDateString = '';
+  int _currentCompletionCount = 0;
+  int _completionCount = 0;
+
+  void _updateCurrentCompletionCount() async {
+    StorageService storageService = locator<StorageService>();
+    final habitStatusEntries =
+        await storageService.getHabitStatusEntriesForHabit(this.widget.habit);
+    _currentCompletionCount = habitStatusEntries.length;
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -35,6 +47,9 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
     } else {
       _nextDateString = 'Pass Due';
     }
+
+    _completionCount = this.widget.habit.getCountUntilCompletion();
+    _updateCurrentCompletionCount();
     super.initState();
   }
 
@@ -97,7 +112,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                               color: Colors.black)),
                       Spacer(),
                       // TODO: Calculate number of times this habits has to be completed correctly.
-                      Text('4/10',
+                      Text('$_currentCompletionCount/$_completionCount',
                           style: TextStyle(
                               fontFamily: 'ObibokRegular',
                               fontSize: 15,
