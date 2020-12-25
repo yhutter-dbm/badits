@@ -169,21 +169,25 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                           'assets/icons/planet.svg'
                         ]);
 
-                        final now = DateTime.now();
+                        final now =
+                            DateTimeHelper.getBaditsDateTime(DateTime.now());
+                        final habitDueDate =
+                            DateTimeHelper.getBaditsDateTime(_dueDate);
+
                         final habit = Habit(
                             name: _habitTextNameController.value.text,
                             creationDate: now,
                             nextCompletionDate:
                                 HabitDurationHelper.getNextCompletionDate(
                                     now, _habitDuration),
-                            dueDate: _dueDate,
+                            dueDate: habitDueDate,
                             assetIcon: randomAssetIcon,
                             duration: _habitDuration,
                             completedForToday: false,
                             currentCompletionCount: 0,
                             countUntilCompletion:
                                 HabitDurationHelper.getCountUntilCompletion(
-                                    now, _dueDate, _habitDuration));
+                                    now, habitDueDate, _habitDuration));
 
                         // Call done callback passed via arguments of route...
                         Navigator.pop(context);

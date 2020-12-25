@@ -51,7 +51,7 @@ class HabitDurationHelper {
 
   static DateTime getNextCompletionDate(
       DateTime dateTime, HabitDuration duration) {
-    dateTime = DateTimeHelper.getBaditsDateTime(DateTime.now());
+    dateTime = DateTimeHelper.getBaditsDateTime(dateTime);
     final actualDuration =
         _convertHabitDurationToActualDuration(dateTime, duration);
     final nextDate = dateTime.add(actualDuration);
