@@ -9,26 +9,38 @@ void main() {
     final Habit habitOne = Habit(
         id: 0,
         name: 'habitOne',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.add(Duration(days: 5)),
-        duration: HabitDuration.daily);
+        assetIcon: '',
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 5);
 
     final Habit habitTwo = Habit(
         id: 1,
         name: 'habitTwo',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.add(Duration(days: 2)),
-        duration: HabitDuration.daily);
+        assetIcon: '',
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 2);
 
     final Habit habitThree = Habit(
         id: 2,
         name: 'habitThree',
         assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.add(Duration(days: 3)),
-        duration: HabitDuration.daily);
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 3);
 
     final List<Habit> testData = [habitOne, habitTwo, habitThree];
 
@@ -44,26 +56,38 @@ void main() {
     final Habit habitPassDue = Habit(
         id: 0,
         name: 'habitPassDue',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.subtract(Duration(days: 3)),
-        duration: HabitDuration.daily);
+        assetIcon: '',
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 3);
 
     final Habit habitOne = Habit(
         id: 1,
         name: 'habitOne',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.add(Duration(days: 2)),
-        duration: HabitDuration.daily);
+        assetIcon: '',
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 2);
 
     final Habit habitTwo = Habit(
         id: 2,
         name: 'habitTwo',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.add(Duration(days: 3)),
-        duration: HabitDuration.daily);
+        assetIcon: '',
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 3);
 
     final List<Habit> testData = [habitPassDue, habitOne, habitTwo];
 
@@ -82,27 +106,38 @@ void main() {
     final Habit habitPassDue = Habit(
         id: 0,
         name: 'habitPassDue',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.subtract(Duration(days: 3)),
-        duration: HabitDuration.daily);
+        assetIcon: '',
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 3);
 
     final Habit habitOne = Habit(
         id: 1,
         name: 'habitOne',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.add(Duration(days: 5)),
-        duration: HabitDuration.daily);
+        assetIcon: '',
+        duration: HabitDuration.daily,
+        completedForToday: false,
+        currentCompletionCount: 0,
+        countUntilCompletion: 5);
 
     final Habit habitCompletedForToday = Habit(
         id: 2,
         name: 'habitCompletedForToday',
-        assetIcon: '',
         creationDate: now,
+        nextCompletionDate: now.add(Duration(days: 1)),
         dueDate: now.add(Duration(days: 3)),
+        assetIcon: '',
+        duration: HabitDuration.daily,
         completedForToday: true,
-        duration: HabitDuration.daily);
+        currentCompletionCount: 0,
+        countUntilCompletion: 3);
 
     final List<Habit> testData = [
       habitPassDue,
