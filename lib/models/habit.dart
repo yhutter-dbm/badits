@@ -1,6 +1,5 @@
 import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/models/habitDuration.dart';
-import 'package:date_util/date_util.dart';
 
 enum HabitDifficulty { none, easy, medium, hard }
 
@@ -41,7 +40,7 @@ class Habit {
         assetIcon: map['assetIcon'],
         duration: HabitDuration.values[map['duration']],
         completedForToday: map['completedForToday'] == 0 ? false : true,
-        currentCompletionCount: map['completedForToday'],
+        currentCompletionCount: map['currentCompletionCount'],
         countUntilCompletion: map['countUntilCompletion']);
   }
 
