@@ -1,4 +1,5 @@
 import 'package:badits/helpers/date_time_helper.dart';
+import 'package:badits/helpers/habit_duration_helper.dart';
 import 'package:badits/helpers/random_helper.dart';
 import 'package:badits/models/colors.dart';
 import 'package:badits/models/habit.dart';
@@ -33,12 +34,12 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
       selectedSingleDateDecoration:
           BoxDecoration(color: BADITS_PINK, shape: BoxShape.circle));
 
-  DateTime _selectedDate = DateTime.now();
+  DateTime _dueDate = DateTime.now();
   HabitDuration _habitDuration = HabitDuration.daily;
 
   void _onSelectedDateChanged(DateTime newDate) {
     setState(() {
-      _selectedDate = newDate;
+      _dueDate = newDate;
     });
   }
 
@@ -108,8 +109,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                             ),
                             Spacer(),
                             Text(
-                              DateTimeHelper.getBaditsDateTimeString(
-                                  _selectedDate),
+                              DateTimeHelper.getBaditsDateTimeString(_dueDate),
                               style: TextStyle(
                                   fontFamily: 'ObibokRegular',
                                   fontSize: 10,
@@ -124,7 +124,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                             border: Border.all(color: Colors.black, width: 1)),
                         child: dp.DayPicker.single(
                             datePickerStyles: _datePickerStyles,
-                            selectedDate: _selectedDate,
+                            selectedDate: _dueDate,
                             onChanged: _onSelectedDateChanged,
                             firstDate: _now,
                             lastDate: _now.add(const Duration(days: 365))),
@@ -158,12 +158,22 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                           'assets/icons/draw.svg',
                           'assets/icons/planet.svg'
                         ]);
+
+                        final now = DateTime.now();
                         final habit = Habit(
-                            assetIcon: randomAssetIcon,
                             name: _habitTextNameController.value.text,
-                            dueDate: _selectedDate,
-                            creationDate: DateTime.now(),
-                            duration: _habitDuration);
+                            creationDate: now,
+                            nextCompletionDate:
+                                HabitDurationHelper.getNextCompletionDate(
+                                    now, _habitDuration),
+                            dueDate: _dueDate,
+                            assetIcon: randomAssetIcon,
+                            duration: _habitDuration,
+                            completedForToday: false,
+                            currentCompletionCount: 0,
+                            countUntilCompletion:
+                                HabitDurationHelper.getCountUntilCompletion(
+                                    now, _dueDate, _habitDuration));
 
                         // Call done callback passed via arguments of route...
                         Navigator.pop(context);

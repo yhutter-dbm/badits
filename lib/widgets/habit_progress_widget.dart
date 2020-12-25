@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:badits/helpers/date_time_helper.dart';
+import 'package:badits/helpers/habit_duration_helper.dart';
 import 'package:badits/models/colors.dart';
 import 'package:badits/models/habit.dart';
 import 'package:badits/models/habitStatusEntry.dart';
@@ -10,8 +11,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class HabitProgressWidget extends StatefulWidget {
   final Habit habit;
+  final Function onHabitCompleteTaped;
 
-  const HabitProgressWidget({Key key, this.habit}) : super(key: key);
+  const HabitProgressWidget({Key key, this.habit, this.onHabitCompleteTaped})
+      : super(key: key);
 
   @override
   _HabitProgressWidgetState createState() => _HabitProgressWidgetState();
@@ -19,43 +22,47 @@ class HabitProgressWidget extends StatefulWidget {
 
 class _HabitProgressWidgetState extends State<HabitProgressWidget> {
   final DateTime _now = DateTime.now();
-
-  bool _habitCompletedForToday = false;
   bool _habitInProgress = false;
   double _habitProgress = 0;
   String _nextDateString = '';
-  int _currentCompletionCount = 0;
-  int _completionCount = 0;
 
-  void _update() async {
+  Future<void> _update() async {
     // Update the completion count
     StorageService storageService = locator<StorageService>();
     final habitStatusEntries =
         await storageService.getHabitStatusEntriesForHabit(this.widget.habit);
-    _currentCompletionCount = habitStatusEntries.length;
-    _completionCount = this.widget.habit.getCountUntilCompletion();
 
     final habitStatusEntriesForToday =
         await storageService.getHabitStatusEntriesForDateTime(
             this.widget.habit, DateTimeHelper.getBaditsDateTimeString(_now));
 
-    // TODO: Update progress correctly.
-    _habitInProgress = new Random().nextBool();
-    _habitProgress =
-        _habitInProgress ? new Random().nextDouble() * 50 + 100 : 0.0;
+    // Calculate the next completion date
+    final nextCompletionDate = HabitDurationHelper.getNextCompletionDate(
+        _now, this.widget.habit.duration);
+    this.widget.habit.nextCompletionDate = nextCompletionDate;
 
-    // Update the next date
-    final nextDate = this.widget.habit.getNextDate(_now);
-    if (nextDate != null) {
-      _nextDateString =
-          'Next: ${DateTimeHelper.getBaditsDateTimeString(nextDate)}';
-    } else {
-      _nextDateString = 'Pass Due';
-    }
+    // Update the completion count
+    this.widget.habit.currentCompletionCount = habitStatusEntries.length;
 
-    // Update the completed flag. If completed the habit can no longer be completed for today
-    _habitCompletedForToday = habitStatusEntriesForToday.length > 0;
-    setState(() {});
+    // Determine if the habit is completed for today
+    this.widget.habit.completedForToday = habitStatusEntriesForToday.length > 0;
+
+    await storageService.updateHabit(this.widget.habit);
+
+    setState(() {
+      // TODO: Update progress correctly.
+      _habitInProgress = new Random().nextBool();
+      _habitProgress =
+          _habitInProgress ? new Random().nextDouble() * 50 + 100 : 0.0;
+
+      final nextDate = this.widget.habit.nextCompletionDate;
+      if (!this.widget.habit.isPassDueDate(_now)) {
+        _nextDateString =
+            'Next: ${DateTimeHelper.getBaditsDateTimeString(nextDate)}';
+      } else {
+        _nextDateString = 'Pass Due';
+      }
+    });
   }
 
   List<Widget> _getStackElements() {
@@ -103,21 +110,25 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                 GestureDetector(
                     onTap: () async {
                       // if the habit has already been completed for today do nothing
-                      if (_habitCompletedForToday) {
+                      if (this.widget.habit.completedForToday) {
                         return;
                       }
                       StorageService storageService = locator<StorageService>();
                       final HabitStatusEntry entry = HabitStatusEntry(
                           habitId: this.widget.habit.id, date: DateTime.now());
                       await storageService.insertHabitStatusEntry(entry);
-                      _update();
+
+                      // Awaiting here is important because if we do not the state is not reflected properly...
+                      await _update();
+                      this.widget.onHabitCompleteTaped();
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 10),
                         child: SvgPicture.asset('assets/icons/check.svg',
                             color: Colors.black))),
                 Spacer(),
-                Text('$_currentCompletionCount/$_completionCount',
+                Text(
+                    '${this.widget.habit.currentCompletionCount}/${this.widget.habit.countUntilCompletion}',
                     style: TextStyle(
                         fontFamily: 'ObibokRegular',
                         fontSize: 15,
@@ -130,7 +141,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
     ];
 
     // In case the habit is already completed add a white overlay with an mid level opacity to create the disabled effect.
-    if (_habitCompletedForToday) {
+    if (this.widget.habit.completedForToday) {
       stackElements.add(Container(
         decoration: BoxDecoration(color: BADITS_DISABLED),
       ));

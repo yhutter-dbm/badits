@@ -6,6 +6,7 @@ import 'package:badits/services/storage_service.dart';
 import 'package:badits/widgets/add_habit_button_widget.dart';
 import 'package:badits/widgets/habit_progress_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:badits/extensions/habit_list_extension.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -18,8 +19,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _loadHabits() async {
     StorageService storageService = locator<StorageService>();
     _habits = await storageService.getHabits();
-    _habits.sort((habitOne, habitTwo) => habitOne.compareTo(habitTwo));
-    setState(() {});
+    setState(() {
+      _habits.sortHabits();
+    });
   }
 
   @override
@@ -64,7 +66,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     itemCount: _habits.length,
                     itemBuilder: (BuildContext context, int index) {
                       final habit = _habits[index];
-                      return HabitProgressWidget(habit: habit);
+                      return HabitProgressWidget(
+                          habit: habit,
+                          onHabitCompleteTaped: () {
+                            _loadHabits();
+                          });
                     }),
               ),
               Spacer(),

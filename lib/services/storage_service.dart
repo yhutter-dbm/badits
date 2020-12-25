@@ -18,11 +18,15 @@ class StorageService {
           CREATE TABLE habits
             (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT, 
-              dueDate TEXT,
+              name TEXT,
               creationDate TEXT,
+              nextCompletionDate TEXT,
+              dueDate TEXT,
               assetIcon TEXT,
-              duration INTEGER
+              duration INTEGER,
+              completedForToday INTEGER,
+              currentCompletionCount INTEGER,
+              countUntilCompletion INTEGER
             );
           """);
 
@@ -41,6 +45,12 @@ class StorageService {
     final database = await _open();
     database.insert('habits', habit.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<void> updateHabit(Habit habit) async {
+    final database = await _open();
+    await database.update('habits', habit.toMap(),
+        where: 'id = ?', whereArgs: [habit.id]);
   }
 
   Future<void> insertHabitStatusEntry(HabitStatusEntry habitStatusEntry) async {
