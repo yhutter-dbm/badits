@@ -11,6 +11,7 @@ class Habit {
   DateTime creationDate;
   String assetIcon;
   HabitDuration duration;
+  bool completedForToday;
 
   final _dateUtility = DateUtil();
 
@@ -20,7 +21,8 @@ class Habit {
       this.dueDate,
       this.creationDate,
       this.duration,
-      this.assetIcon = ''});
+      this.assetIcon = '',
+      this.completedForToday = false});
 
   // Deserialize a habit from database into an actual object
   static Habit fromMap(Map<String, dynamic> map) {
@@ -70,19 +72,6 @@ class Habit {
   bool isPassDueDate(DateTime dateTime) {
     return dateTime.isAfter(this.dueDate) ||
         dateTime.isAtSameMomentAs(this.dueDate);
-  }
-
-  int compareTo(Habit otherHabit) {
-    final now = DateTimeHelper.getBaditsDateTime(DateTime.now());
-    final dueDateSortResult = this.dueDate.compareTo(otherHabit.dueDate);
-    if (this.isPassDueDate(now) && !otherHabit.isPassDueDate(now)) {
-      return 1;
-    } else if (!this.isPassDueDate(now) && otherHabit.isPassDueDate(now)) {
-      return -1;
-    } else if (this.isPassDueDate(now) && otherHabit.isPassDueDate(now)) {
-      return 0;
-    }
-    return dueDateSortResult;
   }
 
   // ignore: missing_return
