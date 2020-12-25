@@ -56,11 +56,17 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
           _habitInProgress ? new Random().nextDouble() * 50 + 100 : 0.0;
 
       final nextDate = this.widget.habit.nextCompletionDate;
-      if (!this.widget.habit.isPassDueDate(_now)) {
-        _nextDateString =
-            'Next: ${DateTimeHelper.getBaditsDateTimeString(nextDate)}';
+
+      // Check if the habit was actually completed
+      final completed = this.widget.habit.currentCompletionCount >=
+          this.widget.habit.countUntilCompletion;
+
+      if (completed) {
+        _nextDateString = 'Completed';
       } else {
-        _nextDateString = 'Pass Due';
+        _nextDateString = this.widget.habit.isPassDueDate(_now)
+            ? 'Pass Due'
+            : 'Next: ${DateTimeHelper.getBaditsDateTimeString(nextDate)}';
       }
     });
   }
