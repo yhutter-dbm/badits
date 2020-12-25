@@ -68,4 +68,16 @@ class StorageService {
       return HabitStatusEntry.fromMap(maps[index]);
     });
   }
+
+  Future<List<HabitStatusEntry>> getHabitStatusEntriesForDateTime(
+      Habit habit, String date) async {
+    final database = await _open();
+    final List<Map<String, dynamic>> maps = await database.query(
+        'habitStatusEntries',
+        where: 'habitId = ? AND date = ?',
+        whereArgs: [habit.id, date]);
+    return List.generate(maps.length, (index) {
+      return HabitStatusEntry.fromMap(maps[index]);
+    });
+  }
 }

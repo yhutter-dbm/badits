@@ -20,28 +20,31 @@ class HabitProgressWidget extends StatefulWidget {
 class _HabitProgressWidgetState extends State<HabitProgressWidget> {
   final DateTime _now = DateTime.now();
 
+  bool _habitCompletedForToday = false;
   bool _habitInProgress = false;
-  double _habitProgress = 50;
+  double _habitProgress = 0;
   String _nextDateString = '';
   int _currentCompletionCount = 0;
   int _completionCount = 0;
 
-  void _updateCurrentCompletionCount() async {
+  void _update() async {
+    // Update the completion count
     StorageService storageService = locator<StorageService>();
     final habitStatusEntries =
         await storageService.getHabitStatusEntriesForHabit(this.widget.habit);
-    setState(() {
-      _currentCompletionCount = habitStatusEntries.length;
-    });
-  }
+    _currentCompletionCount = habitStatusEntries.length;
+    _completionCount = this.widget.habit.getCountUntilCompletion();
 
-  @override
-  void initState() {
-    // TODO: Calculate progress correctly.
+    final habitStatusEntriesForToday =
+        await storageService.getHabitStatusEntriesForDateTime(
+            this.widget.habit, DateTimeHelper.getBaditsDateTimeString(_now));
+
+    // TODO: Update progress correctly.
     _habitInProgress = new Random().nextBool();
     _habitProgress =
         _habitInProgress ? new Random().nextDouble() * 50 + 100 : 0.0;
 
+    // Update the next date
     final nextDate = this.widget.habit.getNextDate(_now);
     if (nextDate != null) {
       _nextDateString =
@@ -50,8 +53,95 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
       _nextDateString = 'Pass Due';
     }
 
-    _completionCount = this.widget.habit.getCountUntilCompletion();
-    _updateCurrentCompletionCount();
+    // Update the completed flag. If completed the habit can no longer be completed for today
+    _habitCompletedForToday = habitStatusEntriesForToday.length > 0;
+    setState(() {});
+  }
+
+  List<Widget> _getStackElements() {
+    List<Widget> stackElements = [
+      Container(
+        color: BADITS_PINK,
+        width: _habitProgress,
+      ),
+      Container(
+        padding: EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Deadline ${DateTimeHelper.getBaditsDateTimeString(this.widget.habit.dueDate)}',
+                  style: TextStyle(
+                      fontFamily: 'ObibokRegular',
+                      fontSize: 10,
+                      color: _habitInProgress ? Colors.white : Colors.black),
+                ),
+                Text('${this.widget.habit.name}',
+                    style: TextStyle(
+                        fontFamily: 'ObibokRegular',
+                        fontSize: 20,
+                        color: _habitInProgress ? Colors.white : Colors.black)),
+                Spacer(),
+                Container(
+                  height: 45,
+                  child: SvgPicture.asset(this.widget.habit.assetIcon,
+                      color: _habitInProgress ? Colors.white : Colors.black),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(_nextDateString,
+                    style: TextStyle(
+                        fontFamily: 'ObibokRegular',
+                        fontSize: 10,
+                        color: BADITS_PINK)),
+                GestureDetector(
+                    onTap: () async {
+                      // if the habit has already been completed for today do nothing
+                      if (_habitCompletedForToday) {
+                        return;
+                      }
+                      StorageService storageService = locator<StorageService>();
+                      final HabitStatusEntry entry = HabitStatusEntry(
+                          habitId: this.widget.habit.id, date: DateTime.now());
+                      await storageService.insertHabitStatusEntry(entry);
+                      _update();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: SvgPicture.asset('assets/icons/check.svg',
+                            color: Colors.black))),
+                Spacer(),
+                Text('$_currentCompletionCount/$_completionCount',
+                    style: TextStyle(
+                        fontFamily: 'ObibokRegular',
+                        fontSize: 15,
+                        color: Colors.black))
+              ],
+            )
+          ],
+        ),
+      )
+    ];
+
+    // In case the habit is already completed add a white overlay with an mid level opacity to create the disabled effect.
+    if (_habitCompletedForToday) {
+      stackElements.add(Container(
+        decoration: BoxDecoration(color: BADITS_DISABLED),
+      ));
+    }
+
+    return stackElements;
+  }
+
+  @override
+  void initState() {
+    _update();
     super.initState();
   }
 
@@ -62,78 +152,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
         margin: EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(color: BADITS_DARKER_GRAY),
         child: Stack(
-          children: [
-            Container(
-              color: BADITS_PINK,
-              width: _habitProgress,
-            ),
-            Container(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Deadline ${DateTimeHelper.getBaditsDateTimeString(this.widget.habit.dueDate)}',
-                        style: TextStyle(
-                            fontFamily: 'ObibokRegular',
-                            fontSize: 10,
-                            color:
-                                _habitInProgress ? Colors.white : Colors.black),
-                      ),
-                      Text('${this.widget.habit.name}',
-                          style: TextStyle(
-                              fontFamily: 'ObibokRegular',
-                              fontSize: 20,
-                              color: _habitInProgress
-                                  ? Colors.white
-                                  : Colors.black)),
-                      Spacer(),
-                      Container(
-                        height: 45,
-                        child: SvgPicture.asset(this.widget.habit.assetIcon,
-                            color:
-                                _habitInProgress ? Colors.white : Colors.black),
-                      )
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(_nextDateString,
-                          style: TextStyle(
-                              fontFamily: 'ObibokRegular',
-                              fontSize: 10,
-                              color: BADITS_PINK)),
-                      GestureDetector(
-                          onTap: () async {
-                            StorageService storageService =
-                                locator<StorageService>();
-                            final HabitStatusEntry entry = HabitStatusEntry(
-                                habitId: this.widget.habit.id,
-                                date: DateTime.now());
-                            await storageService.insertHabitStatusEntry(entry);
-                            _updateCurrentCompletionCount();
-                            // TODO: Update next date and gray out (no longer do anything on tap) for today also update the progress.
-                          },
-                          child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              child: SvgPicture.asset('assets/icons/check.svg',
-                                  color: Colors.black))),
-                      Spacer(),
-                      Text('$_currentCompletionCount/$_completionCount',
-                          style: TextStyle(
-                              fontFamily: 'ObibokRegular',
-                              fontSize: 15,
-                              color: Colors.black))
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
+          children: _getStackElements(),
         ));
   }
 }
