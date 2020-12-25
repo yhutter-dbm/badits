@@ -34,13 +34,23 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
       selectedSingleDateDecoration:
           BoxDecoration(color: BADITS_PINK, shape: BoxShape.circle));
 
-  DateTime _dueDate = DateTime.now();
+  DateTime _firstDate;
+  DateTime _lastDate;
+  DateTime _dueDate;
   HabitDuration _habitDuration = HabitDuration.daily;
 
-  void _onSelectedDateChanged(DateTime newDate) {
+  void _onSelectedDueDateChanged(DateTime newDate) {
     setState(() {
       _dueDate = newDate;
     });
+  }
+
+  @override
+  void initState() {
+    _firstDate = _now.add(Duration(days: 1));
+    _dueDate = _firstDate;
+    _lastDate = _firstDate.add(Duration(days: 365));
+    super.initState();
   }
 
   @override
@@ -125,9 +135,9 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                         child: dp.DayPicker.single(
                             datePickerStyles: _datePickerStyles,
                             selectedDate: _dueDate,
-                            onChanged: _onSelectedDateChanged,
-                            firstDate: _now,
-                            lastDate: _now.add(const Duration(days: 365))),
+                            onChanged: _onSelectedDueDateChanged,
+                            firstDate: _firstDate,
+                            lastDate: _lastDate),
                       )
                     ],
                   )),
