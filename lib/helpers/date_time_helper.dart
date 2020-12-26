@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 
-// TODO: Add tests for these methods...
 class DateTimeHelper {
   static const BADITS_DATEFORMAT = 'dd.MM.yyyy';
 

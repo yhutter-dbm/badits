@@ -16,7 +16,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Habit> _habits = [];
 
-  void _loadHabits() async {
+  Future<void> _loadHabits() async {
     StorageService storageService = locator<StorageService>();
     _habits = await storageService.getHabits();
     setState(() {
@@ -67,9 +67,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       final habit = _habits[index];
                       return HabitProgressWidget(
+                          // Create a unique key per element
+                          key: Key(habit.id.toString()),
                           habit: habit,
-                          onHabitCompleteTaped: () {
-                            _loadHabits();
+                          onHabitCompleteTaped: () async {
+                            await _loadHabits();
                           });
                     }),
               ),
@@ -84,7 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         StorageService storageService =
                             locator<StorageService>();
                         await storageService.insertHabit(habit);
-                        _loadHabits();
+                        await _loadHabits();
                       }));
                     },
                   )

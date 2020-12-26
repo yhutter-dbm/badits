@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:badits/helpers/date_time_helper.dart';
 import 'package:badits/helpers/habit_duration_helper.dart';
 import 'package:badits/models/colors.dart';
@@ -23,8 +22,10 @@ class HabitProgressWidget extends StatefulWidget {
 class _HabitProgressWidgetState extends State<HabitProgressWidget> {
   final DateTime _now = DateTime.now();
   bool _habitInProgress = false;
+  bool _habitCompleted = false;
   double _habitProgress = 0;
   String _nextDateString = '';
+  GlobalKey _progressContainerKey = GlobalKey();
 
   Future<void> _update() async {
     // Update the completion count
@@ -50,18 +51,26 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
     await storageService.updateHabit(this.widget.habit);
 
     setState(() {
-      // TODO: Update progress correctly.
-      _habitInProgress = new Random().nextBool();
+      _habitInProgress = this.widget.habit.currentCompletionCount > 0 &&
+          this.widget.habit.currentCompletionCount <
+              this.widget.habit.countUntilCompletion;
+
+      final RenderBox progressContainer =
+          _progressContainerKey.currentContext.findRenderObject();
+      final progressContainerWith = progressContainer.size.width;
+
+      // TODO: Prevent animation from triggering when there was actually no change
       _habitProgress =
-          _habitInProgress ? new Random().nextDouble() * 50 + 100 : 0.0;
+          (progressContainerWith / this.widget.habit.countUntilCompletion) *
+              this.widget.habit.currentCompletionCount;
 
       final nextDate = this.widget.habit.nextCompletionDate;
 
       // Check if the habit was actually completed
-      final completed = this.widget.habit.currentCompletionCount >=
+      _habitCompleted = this.widget.habit.currentCompletionCount >=
           this.widget.habit.countUntilCompletion;
 
-      if (completed) {
+      if (_habitCompleted) {
         _nextDateString = 'Completed';
       } else {
         _nextDateString = this.widget.habit.isPassDueDate(_now)
@@ -73,9 +82,11 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
 
   List<Widget> _getStackElements() {
     List<Widget> stackElements = [
-      Container(
+      AnimatedContainer(
         color: BADITS_PINK,
         width: _habitProgress,
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
       ),
       Container(
         padding: EdgeInsets.all(8),
@@ -112,7 +123,9 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                     style: TextStyle(
                         fontFamily: 'ObibokRegular',
                         fontSize: 10,
-                        color: BADITS_PINK)),
+                        color: _habitInProgress || _habitCompleted
+                            ? Colors.black
+                            : BADITS_PINK)),
                 GestureDetector(
                     onTap: () async {
                       // if the habit has already been completed for today do nothing
@@ -165,6 +178,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        key: _progressContainerKey,
         height: 100,
         margin: EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(color: BADITS_DARKER_GRAY),
