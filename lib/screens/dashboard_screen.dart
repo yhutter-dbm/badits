@@ -125,6 +125,19 @@ class _DashboardScreenState extends State<DashboardScreen>
                         _slideInFirstHabit();
                       }));
                     },
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacementNamed(ABOUT_ROUTE);
+                    },
+                    child: Text(
+                      'About',
+                      style: TextStyle(
+                          fontFamily: 'ObibokBold',
+                          color: Colors.black,
+                          fontSize: 15),
+                    ),
                   )
                 ],
               )

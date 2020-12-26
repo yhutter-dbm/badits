@@ -54,9 +54,13 @@ flutter:
 
   assets:
 
-    # Icons
+    # Images
     - assets/images/chilling.png
     - assets/images/laying.png
+    - assets/images/coffee.png
+    - assets/images/coffee.gif
+
+    # Icons
     - assets/icons/arrow.svg
     - assets/icons/check.svg
     - assets/icons/check_filled.svg
