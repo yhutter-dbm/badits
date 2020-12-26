@@ -59,7 +59,6 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
           _progressContainerKey.currentContext.findRenderObject();
       final progressContainerWith = progressContainer.size.width;
 
-      // TODO: Prevent animation from triggering when there was actually no change
       _habitProgress =
           (progressContainerWith / this.widget.habit.countUntilCompletion) *
               this.widget.habit.currentCompletionCount;

@@ -13,8 +13,13 @@ class DashboardScreen extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen>
+    with SingleTickerProviderStateMixin {
+  final _animatedListKey = GlobalKey<AnimatedListState>();
+
   List<Habit> _habits = [];
+  AnimationController _controller;
+  Animation<Offset> _slideInAnimation;
 
   Future<void> _loadHabits() async {
     StorageService storageService = locator<StorageService>();
@@ -24,10 +29,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
+  Future<void> _loadHabitsAndSlideIn() async {
+    StorageService storageService = locator<StorageService>();
+    _habits = await storageService.getHabits();
+    setState(() {
+      _habits.sortHabits();
+      _slideInAllHabits();
+    });
+  }
+
+  void _slideInAllHabits() {
+    for (int i = 0; i < _habits.length; i++) {
+      _animatedListKey.currentState.insertItem(i);
+    }
+  }
+
   @override
   void initState() {
-    _loadHabits();
     super.initState();
+    // Implemented with reference to: https://api.flutter.dev/flutter/widgets/SlideTransition-class.html
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..forward();
+    _slideInAnimation = Tween<Offset>(
+      begin: const Offset(1.5, 0.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.bounceIn,
+    ));
+    _loadHabitsAndSlideIn();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -61,19 +99,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Image.asset('assets/images/laying.png'),
               Container(
                 height: 250,
-                child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: _habits.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final habit = _habits[index];
-                      return HabitProgressWidget(
+                // Implemented with reference to: https://www.youtube.com/watch?v=ZtfItHwFlZ8&ab_channel=Flutter
+                child: AnimatedList(
+                  key: _animatedListKey,
+                  initialItemCount: _habits.length,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index, animation) {
+                    final habit = _habits[index];
+                    return SlideTransition(
+                      position: _slideInAnimation,
+                      child: HabitProgressWidget(
                           // Create a unique key per element
                           key: Key(habit.id.toString()),
                           habit: habit,
                           onHabitCompleteTaped: () async {
                             await _loadHabits();
-                          });
-                    }),
+                          }),
+                    );
+                  },
+                ),
               ),
               Spacer(),
               Row(
@@ -87,6 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             locator<StorageService>();
                         await storageService.insertHabit(habit);
                         await _loadHabits();
+                        // TODO: Animate recently added habit
                       }));
                     },
                   )
