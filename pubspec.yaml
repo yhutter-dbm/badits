@@ -59,6 +59,7 @@ flutter:
     - assets/images/laying.png
     - assets/icons/arrow.svg
     - assets/icons/check.svg
+    - assets/icons/check_filled.svg
     - assets/icons/draw.svg
     - assets/icons/fitness_icon.svg
     - assets/icons/healthy.svg

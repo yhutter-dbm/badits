@@ -140,7 +140,10 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 10),
-                        child: SvgPicture.asset('assets/icons/check.svg',
+                        child: SvgPicture.asset(
+                            this.widget.habit.completedForToday
+                                ? 'assets/icons/check_filled.svg'
+                                : 'assets/icons/check.svg',
                             color: Colors.black))),
                 Spacer(),
                 Text(
