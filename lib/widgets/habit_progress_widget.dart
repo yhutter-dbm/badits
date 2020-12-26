@@ -168,8 +168,8 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
 
   @override
   void initState() {
-    _update();
     super.initState();
+    _update();
   }
 
   @override

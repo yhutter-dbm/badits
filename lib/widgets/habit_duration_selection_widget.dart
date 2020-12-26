@@ -26,6 +26,7 @@ class _HabitDurationSelectionWidgetState
 
   @override
   void initState() {
+    super.initState();
     this._duration = this.widget.initialDuration;
     switch (this._duration) {
       case HabitDuration.daily:
@@ -50,7 +51,6 @@ class _HabitDurationSelectionWidgetState
         }
         break;
     }
-    super.initState();
   }
 
   @override

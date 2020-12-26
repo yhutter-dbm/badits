@@ -47,10 +47,10 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
 
   @override
   void initState() {
+    super.initState();
     _firstDate = _now.add(Duration(days: 1));
     _dueDate = _firstDate;
     _lastDate = _firstDate.add(Duration(days: 365));
-    super.initState();
   }
 
   @override
@@ -102,45 +102,44 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                           }
                           return null;
                         },
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        padding: EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom:
-                                    BorderSide(width: 1, color: Colors.black))),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Deadline',
-                              style: TextStyle(
-                                  fontFamily: 'ObibokRegular', fontSize: 10),
-                            ),
-                            Spacer(),
-                            Text(
-                              DateTimeHelper.getBaditsDateTimeString(_dueDate),
-                              style: TextStyle(
-                                  fontFamily: 'ObibokRegular',
-                                  fontSize: 10,
-                                  color: BADITS_DARKER_GRAY),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 30),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 1)),
-                        child: dp.DayPicker.single(
-                            datePickerStyles: _datePickerStyles,
-                            selectedDate: _dueDate,
-                            onChanged: _onSelectedDueDateChanged,
-                            firstDate: _firstDate,
-                            lastDate: _lastDate),
                       )
                     ],
                   )),
+              Container(
+                margin: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.black))),
+                child: Row(
+                  children: [
+                    Text(
+                      'Deadline',
+                      style:
+                          TextStyle(fontFamily: 'ObibokRegular', fontSize: 10),
+                    ),
+                    Spacer(),
+                    Text(
+                      DateTimeHelper.getBaditsDateTimeString(_dueDate),
+                      style: TextStyle(
+                          fontFamily: 'ObibokRegular',
+                          fontSize: 10,
+                          color: BADITS_DARKER_GRAY),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 30),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1)),
+                child: dp.DayPicker.single(
+                    datePickerStyles: _datePickerStyles,
+                    selectedDate: _dueDate,
+                    onChanged: _onSelectedDueDateChanged,
+                    firstDate: _firstDate,
+                    lastDate: _lastDate),
+              ),
               HabitDurationSelectionWidget(
                 initialDuration: HabitDuration.daily,
                 onDurationChanged: (HabitDuration duration) {
