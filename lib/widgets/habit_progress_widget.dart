@@ -82,11 +82,9 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
 
   List<Widget> _getStackElements() {
     List<Widget> stackElements = [
-      AnimatedContainer(
+      Container(
         color: BADITS_PINK,
         width: _habitProgress,
-        duration: Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
       ),
       Container(
         padding: EdgeInsets.all(8),
