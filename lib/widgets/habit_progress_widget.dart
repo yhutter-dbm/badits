@@ -5,6 +5,7 @@ import 'package:badits/models/habit.dart';
 import 'package:badits/models/habitStatusEntry.dart';
 import 'package:badits/services/service_locator.dart';
 import 'package:badits/services/storage_service.dart';
+import 'package:badits/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -103,7 +104,7 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
                       fontSize: 10,
                       color: _habitInProgress ? Colors.white : Colors.black),
                 ),
-                Text('${this.widget.habit.name}',
+                Text('${this.widget.habit.name.truncateWithEllipsis(12)}',
                     style: TextStyle(
                         fontFamily: 'ObibokRegular',
                         fontSize: 20,
