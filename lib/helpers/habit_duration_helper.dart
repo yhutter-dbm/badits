@@ -1,4 +1,6 @@
 import 'package:badits/models/habitDuration.dart';
+import 'package:badits/extensions/duration_extension.dart';
+import 'package:badits/extensions/date_time_extension.dart';
 import 'package:date_util/date_util.dart';
 
 import 'date_time_helper.dart';
@@ -17,11 +19,11 @@ class HabitDurationHelper {
         }
       case HabitDuration.weekly:
         {
-          return difference.inDays ~/ 7;
+          return difference.inWeeks();
         }
       case HabitDuration.monthly:
         {
-          return dueDate.month - creationDate.month;
+          return creationDate.differenceInMonths(dueDate);
         }
     }
   }
