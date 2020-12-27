@@ -29,11 +29,11 @@ class _HabitSuggestionScreenState extends State<HabitSuggestionScreen> {
 
   @override
   void initState() {
-    super.initState();
     _habitSuggestions = DummyDataHelper.getHabits()
         .map((habit) => ChooseHabitButtonWidget(
             habit: habit, onSelectionChanged: _updateChoosenHabits))
         .toList();
+    super.initState();
   }
 
   @override

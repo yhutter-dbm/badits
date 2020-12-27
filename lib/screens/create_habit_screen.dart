@@ -47,10 +47,10 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
 
   @override
   void initState() {
-    super.initState();
     _firstDate = _now.add(Duration(days: 1));
     _dueDate = _firstDate;
     _lastDate = _firstDate.add(Duration(days: 365));
+    super.initState();
   }
 
   @override

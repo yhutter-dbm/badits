@@ -50,33 +50,36 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
 
     await storageService.updateHabit(this.widget.habit);
 
-    setState(() {
-      _habitInProgress = this.widget.habit.currentCompletionCount > 0 &&
-          this.widget.habit.currentCompletionCount <
-              this.widget.habit.countUntilCompletion;
+    // Because this method is called asynchronously in initState it could happen that the widget is not mounted yet.
+    if (this.mounted) {
+      setState(() {
+        _habitInProgress = this.widget.habit.currentCompletionCount > 0 &&
+            this.widget.habit.currentCompletionCount <
+                this.widget.habit.countUntilCompletion;
 
-      final RenderBox progressContainer =
-          _progressContainerKey.currentContext.findRenderObject();
-      final progressContainerWith = progressContainer.size.width;
+        final RenderBox progressContainer =
+            _progressContainerKey.currentContext.findRenderObject();
+        final progressContainerWith = progressContainer.size.width;
 
-      _habitProgress =
-          (progressContainerWith / this.widget.habit.countUntilCompletion) *
-              this.widget.habit.currentCompletionCount;
+        _habitProgress =
+            (progressContainerWith / this.widget.habit.countUntilCompletion) *
+                this.widget.habit.currentCompletionCount;
 
-      final nextDate = this.widget.habit.nextCompletionDate;
+        final nextDate = this.widget.habit.nextCompletionDate;
 
-      // Check if the habit was actually completed
-      _habitCompleted = this.widget.habit.currentCompletionCount >=
-          this.widget.habit.countUntilCompletion;
+        // Check if the habit was actually completed
+        _habitCompleted = this.widget.habit.currentCompletionCount >=
+            this.widget.habit.countUntilCompletion;
 
-      if (_habitCompleted) {
-        _nextDateString = 'Completed';
-      } else {
-        _nextDateString = this.widget.habit.isPassDueDate(_now)
-            ? 'Pass Due'
-            : 'Next: ${DateTimeHelper.getBaditsDateTimeString(nextDate)}';
-      }
-    });
+        if (_habitCompleted) {
+          _nextDateString = 'Completed';
+        } else {
+          _nextDateString = this.widget.habit.isPassDueDate(_now)
+              ? 'Pass Due'
+              : 'Next: ${DateTimeHelper.getBaditsDateTimeString(nextDate)}';
+        }
+      });
+    }
   }
 
   List<Widget> _getStackElements() {
@@ -171,8 +174,8 @@ class _HabitProgressWidgetState extends State<HabitProgressWidget> {
 
   @override
   void initState() {
-    super.initState();
     _update();
+    super.initState();
   }
 
   @override

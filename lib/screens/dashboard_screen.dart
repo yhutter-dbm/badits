@@ -49,13 +49,13 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   void initState() {
-    super.initState();
     // Implemented with reference to: https://api.flutter.dev/flutter/widgets/SlideTransition-class.html
     _slideInAnimation = Tween<Offset>(
       begin: const Offset(1.5, 0.0),
       end: Offset.zero,
     );
     _loadHabitsAndSlideIn();
+    super.initState();
   }
 
   @override
