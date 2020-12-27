@@ -8,6 +8,7 @@ import 'package:badits/screen_arguments/create_habit_screen_arguments.dart';
 import 'package:badits/widgets/cancel_button_widget.dart';
 import 'package:badits/widgets/confirm_button_widget.dart';
 import 'package:badits/widgets/habit_duration_selection_widget.dart';
+import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 
@@ -35,9 +36,11 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
           BoxDecoration(color: BADITS_PINK, shape: BoxShape.circle));
 
   DateTime _firstDate;
+  DateTime _initialFirstDate;
   DateTime _lastDate;
   DateTime _dueDate;
   HabitDuration _habitDuration = HabitDuration.daily;
+  final _dateUtility = DateUtil();
 
   void _onSelectedDueDateChanged(DateTime newDate) {
     setState(() {
@@ -45,9 +48,42 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
     });
   }
 
+  void _updateCalendarAccordingToHabitDuration() {
+    // Depending on the duration we also need to forward the firstDate and the selectedDate
+    switch (_habitDuration) {
+      case HabitDuration.daily:
+        {
+          setState(() {
+            _firstDate = _initialFirstDate;
+            _dueDate = _firstDate;
+          });
+        }
+        break;
+      case HabitDuration.weekly:
+        {
+          setState(() {
+            _firstDate = _initialFirstDate.add(Duration(days: 7));
+            _dueDate = _firstDate;
+          });
+        }
+        break;
+      case HabitDuration.monthly:
+        {
+          setState(() {
+            final daysInMonth =
+                _dateUtility.daysInMonth(_dueDate.month, _dueDate.year);
+            _firstDate = _initialFirstDate.add(Duration(days: daysInMonth));
+            _dueDate = _firstDate;
+          });
+        }
+        break;
+    }
+  }
+
   @override
   void initState() {
-    _firstDate = _now.add(Duration(days: 1));
+    _initialFirstDate = _now.add(Duration(days: 1));
+    _firstDate = _initialFirstDate;
     _dueDate = _firstDate;
     _lastDate = _firstDate.add(Duration(days: 365));
     super.initState();
@@ -144,6 +180,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                 initialDuration: HabitDuration.daily,
                 onDurationChanged: (HabitDuration duration) {
                   _habitDuration = duration;
+                  _updateCalendarAccordingToHabitDuration();
                 },
               ),
               Spacer(),
