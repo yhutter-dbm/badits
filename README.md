@@ -26,7 +26,9 @@ In the dashboard you can see all your habits. Upon completing the habit for toda
 ![Dashboard](./documentation/images/dashboard.png)
 
 ### About
-Just tells you who made this app and which assets etc. were used :smile:.
+Just tells you who made this app and which assets etc. were used.
+
+Kudos to [Open Doodles](https://www.opendoodles.com/) for those awesome illustrations :smile:.
 
 ![About](./documentation/images/about.png)
 
